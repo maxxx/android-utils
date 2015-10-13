@@ -1,4 +1,4 @@
-package net.malahovsky.utils.view;
+package ru.maxdestroyer.utils.view;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -20,15 +20,13 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.malahovsky.utils.Util;
-import net.malahovsky.utils.UtilConfig;
-
 import java.lang.reflect.Method;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import ru.maxdestroyer.utils.UtilConfig;
 
-// net.malahovsky.utils.view.UtilActivity
+// ru.maxdestroyer.utils.view.UtilActivity
 @SuppressWarnings("unused")
 public abstract class UtilActivityFragment extends FragmentActivity implements OnClickListener
 {
@@ -121,7 +119,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 	
 	protected void LOG(Object text)
 	{
-		Util.LOG(text);
+		ru.maxdestroyer.utils.Util.LOG(text);
 	}
 	
 	@Override
@@ -207,7 +205,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 	
 	protected boolean IsLand()
 	{
-		return Util.IsLand(_this);
+		return ru.maxdestroyer.utils.Util.IsLand(_this);
 	}
 	
 	public void Hide(int res)
@@ -277,7 +275,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 		});
 	}
 
-	public UtilFragment getVisibleFragment()
+	public ru.maxdestroyer.utils.view.UtilFragment getVisibleFragment()
 	{
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		List<Fragment> fragments = fragmentManager.getFragments();
@@ -286,7 +284,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 		for (Fragment fragment : fragments)
 		{
 			if (fragment != null && fragment.isVisible())
-				return (UtilFragment) fragment;
+				return (ru.maxdestroyer.utils.view.UtilFragment) fragment;
 		}
 		return null;
 	}

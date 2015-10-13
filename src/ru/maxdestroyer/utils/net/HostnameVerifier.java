@@ -1,4 +1,4 @@
-package net.malahovsky.utils.net;
+package ru.maxdestroyer.utils.net;
 
 import java.io.IOException;
 import java.security.cert.X509Certificate;

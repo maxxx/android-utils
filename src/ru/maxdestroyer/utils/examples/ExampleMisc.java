@@ -1,4 +1,4 @@
-package net.malahovsky.utils.examples;
+package ru.maxdestroyer.utils.examples;
 
 public class ExampleMisc
 {

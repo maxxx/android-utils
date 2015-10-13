@@ -1,4 +1,4 @@
-package net.malahovsky.utils.view;
+package ru.maxdestroyer.utils.view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,12 +18,12 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.malahovsky.utils.Util;
-import net.malahovsky.utils.UtilConfig;
-
 import java.lang.reflect.Method;
 
-// net.malahovsky.utils.view.UtilActivity
+import ru.maxdestroyer.utils.Util;
+import ru.maxdestroyer.utils.UtilConfig;
+
+// ru.maxdestroyer.utils.view.UtilActivity
 @SuppressWarnings("unused")
 public abstract class UtilActivity extends Activity implements OnClickListener
 {

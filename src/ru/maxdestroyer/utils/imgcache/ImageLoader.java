@@ -1,4 +1,4 @@
-package net.malahovsky.utils.imgcache;
+package ru.maxdestroyer.utils.imgcache;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -6,11 +6,11 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
 
-import net.malahovsky.utils.Util;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+
+import ru.maxdestroyer.utils.Util;
 
 public class ImageLoader // extends AsyncTask<Object, Void, Bitmap>
 {

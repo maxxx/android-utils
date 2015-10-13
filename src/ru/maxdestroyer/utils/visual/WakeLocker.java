@@ -1,4 +1,4 @@
-package net.malahovsky.utils.visual;
+package ru.maxdestroyer.utils.visual;
 
 import android.annotation.SuppressLint;
 import android.app.KeyguardManager;

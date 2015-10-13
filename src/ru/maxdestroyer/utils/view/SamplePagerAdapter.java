@@ -1,4 +1,4 @@
-package net.malahovsky.utils.view;
+package ru.maxdestroyer.utils.view;
 
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;

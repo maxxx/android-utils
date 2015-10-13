@@ -1,4 +1,4 @@
-package net.malahovsky.utils.view;
+package ru.maxdestroyer.utils.view;
 
 import android.app.Dialog;
 import android.content.Context;

@@ -1,11 +1,11 @@
-package net.malahovsky.utils.view;
+package ru.maxdestroyer.utils.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import net.malahovsky.utils.Util;
+import ru.maxdestroyer.utils.Util;
 
 public class UtilFragment extends Fragment implements View.OnClickListener
 {

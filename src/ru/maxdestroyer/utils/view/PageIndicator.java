@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.malahovsky.utils.view;
+package ru.maxdestroyer.utils.view;
 
 import android.support.v4.view.ViewPager;
 

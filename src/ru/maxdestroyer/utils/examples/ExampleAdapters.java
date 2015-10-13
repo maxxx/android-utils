@@ -1,4 +1,4 @@
-package net.malahovsky.utils.examples;
+package ru.maxdestroyer.utils.examples;
 
 /**
  * Created by Jack on 18.06.2014.
@@ -123,7 +123,7 @@ public abstract class ExampleAdapters
 //
 //
 //
-//			//			TextView rw1 = (TextView)findViewById(net.malahovsky.utils.R.id.row1);
+//			//			TextView rw1 = (TextView)findViewById(ru.maxdestroyer.utils.R.id.row1);
 //			//			rw1.setText(map.get(position));
 //			return view;
 //		}

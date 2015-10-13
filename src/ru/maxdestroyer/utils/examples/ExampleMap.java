@@ -1,4 +1,4 @@
-//package net.malahovsky.utils.examples;
+//package ru.maxdestroyer.utils.examples;
 //
 //import android.content.ComponentName;
 //import android.content.Context;
@@ -11,9 +11,9 @@
 //import android.location.LocationManager;
 //import android.os.Bundle;
 //import android.os.IBinder;
-//import net.malahovsky.utils.R;
-//import net.malahovsky.utils.Util;
-//import net.malahovsky.utils.view.UtilActivity;
+//import ru.maxdestroyer.utils.R;
+//import ru.maxdestroyer.utils.Util;
+//import ru.maxdestroyer.utils.view.UtilActivity;
 //
 //import java.util.ArrayList;
 //import java.util.List;

@@ -1,4 +1,4 @@
-package net.malahovsky.utils.imgcache;
+package ru.maxdestroyer.utils.imgcache;
 
 import android.content.Context;
 import android.graphics.Bitmap;

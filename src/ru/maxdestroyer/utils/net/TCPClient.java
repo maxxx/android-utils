@@ -1,8 +1,6 @@
-package net.malahovsky.utils.net;
+package ru.maxdestroyer.utils.net;
 
 import android.os.Looper;
-
-import net.malahovsky.utils.Util;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,6 +8,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+
+import ru.maxdestroyer.utils.Util;
 
 public abstract class TCPClient extends Thread
 {

@@ -1,4 +1,4 @@
-package net.malahovsky.utils.view;
+package ru.maxdestroyer.utils.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-//<net.malahovsky.utils.view.ScrollViewAdapter
+//<ru.maxdestroyer.utils.view.ScrollViewAdapter
 //  android:layout_width="match_parent"
 //  android:id="@+id/sv"
 //  android:layout_height="wrap_content">
@@ -17,7 +17,7 @@ import android.widget.ScrollView;
 //  android:layout_height="wrap_content">
 //
 //  </LinearLayout>
-//  </net.malahovsky.utils.view.ScrollViewAdapter>
+//  </ru.maxdestroyer.utils.view.ScrollViewAdapter>
 public class ScrollViewAdapter extends ScrollView
 {
 	private LinearLayout layout;

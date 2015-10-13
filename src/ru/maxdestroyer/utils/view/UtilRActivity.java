@@ -1,4 +1,4 @@
-//package net.malahovsky.utils.view;
+//package ru.maxdestroyer.utils.view;
 //
 //import android.annotation.SuppressLint;
 //import android.app.ProgressDialog;
@@ -16,8 +16,8 @@
 //import android.view.View.OnClickListener;
 //import android.widget.TextView;
 //import android.widget.Toast;
-//import net.malahovsky.utils.Util;
-//import net.malahovsky.utils.UtilConfig;
+//import ru.maxdestroyer.utils.Util;
+//import ru.maxdestroyer.utils.UtilConfig;
 //import roboguice.activity.RoboActivity;
 //
 //import java.lang.reflect.Method;

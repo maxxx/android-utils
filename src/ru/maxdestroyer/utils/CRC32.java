@@ -1,4 +1,4 @@
-package net.malahovsky.utils;
+package ru.maxdestroyer.utils;
 
 public class CRC32 // implements Checksum
 {

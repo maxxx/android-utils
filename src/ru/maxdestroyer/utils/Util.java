@@ -1,4 +1,4 @@
-package net.malahovsky.utils;
+package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -55,10 +55,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.malahovsky.utils.net.HostChecker;
-import net.malahovsky.utils.visual.Vibrate;
-import net.malahovsky.utils.visual.WakeLocker;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
@@ -72,7 +68,9 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ru.maxdestroyer.utils.R;
+import ru.maxdestroyer.utils.net.HostChecker;
+import ru.maxdestroyer.utils.visual.Vibrate;
+import ru.maxdestroyer.utils.visual.WakeLocker;
 
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")

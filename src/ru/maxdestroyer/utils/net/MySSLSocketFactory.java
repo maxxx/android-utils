@@ -1,4 +1,4 @@
-package net.malahovsky.utils.net;
+package ru.maxdestroyer.utils.net;
 
 import org.apache.http.conn.ssl.SSLSocketFactory;
 

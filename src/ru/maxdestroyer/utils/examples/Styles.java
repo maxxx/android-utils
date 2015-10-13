@@ -1,4 +1,4 @@
-package net.malahovsky.utils.examples;
+package ru.maxdestroyer.utils.examples;
 
 /**
  * Created by Jack on 20.06.2014.

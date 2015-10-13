@@ -16,7 +16,7 @@
 // * Modifications by: Alessandro Crugnola
 // */
 //
-//package net.malahovsky.utils.view;
+//package ru.maxdestroyer.utils.view;
 //
 //import net.malahovsky.taxirithm.R;
 //import android.content.Context;

@@ -1,4 +1,4 @@
-package net.malahovsky.utils.view;
+package ru.maxdestroyer.utils.view;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,9 +10,8 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.malahovsky.utils.Util;
-
 import ru.maxdestroyer.utils.R;
+import ru.maxdestroyer.utils.Util;
 
 public class IphoneDialog extends Dialog
 {

@@ -1,4 +1,4 @@
-package net.malahovsky.utils;
+package ru.maxdestroyer.utils;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;

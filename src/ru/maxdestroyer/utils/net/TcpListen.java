@@ -1,4 +1,4 @@
-package net.malahovsky.utils.net;
+package ru.maxdestroyer.utils.net;
 
 public abstract class TcpListen implements Runnable
 {

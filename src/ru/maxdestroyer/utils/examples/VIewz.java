@@ -1,4 +1,4 @@
-package net.malahovsky.utils.examples;
+package ru.maxdestroyer.utils.examples;
 
 public class VIewz
 {
@@ -23,7 +23,7 @@ public class VIewz
 //	android:layout_height="300dp"
 //	android:id="@+id/vpPhoto"/>
 //
-//	<net.malahovsky.utils.view.CirclePageIndicator
+//	<ru.maxdestroyer.utils.view.CirclePageIndicator
 //	android:id="@+id/indicator"
 //	android:layout_width="fill_parent"
 //	app:fillColor="@color/text_pink"

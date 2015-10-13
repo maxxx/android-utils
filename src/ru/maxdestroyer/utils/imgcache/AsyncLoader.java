@@ -1,4 +1,4 @@
-package net.malahovsky.utils.imgcache;
+package ru.maxdestroyer.utils.imgcache;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -9,8 +9,6 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.ImageView;
 
-import net.malahovsky.utils.Util;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,6 +16,8 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import ru.maxdestroyer.utils.Util;
 
 // object - �� ����, Bitmap - �� �����. Void - ?
 public class AsyncLoader extends AsyncTask<Object, Void, Bitmap>

@@ -1,4 +1,4 @@
-package net.malahovsky.utils.visual;
+package ru.maxdestroyer.utils.visual;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;

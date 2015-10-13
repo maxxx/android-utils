@@ -1,14 +1,10 @@
-package net.malahovsky.utils.net;
+package ru.maxdestroyer.utils.net;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.TextView;
-
-import net.malahovsky.utils.Convert;
-import net.malahovsky.utils.Util;
-import net.malahovsky.utils.view.UtilActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -41,6 +37,10 @@ import java.net.URL;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.maxdestroyer.utils.Convert;
+import ru.maxdestroyer.utils.Util;
+import ru.maxdestroyer.utils.view.UtilActivity;
 
 //import org.apache.http.entity.mime.HttpMultipartMode;
 //import org.apache.http.entity.mime.MultipartEntityBuilder;
