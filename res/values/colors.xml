@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue_iphone">#007aff</color>
+    <color name="gray_iphone">#727275</color>
+    <color name="lgray_iphone">#B5B5B5</color>
+    <color name="bg_iphone">#f0eff4</color>
+    <color name="separator">#D9D9D8</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+
+
+</resources>
