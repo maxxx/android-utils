@@ -8,6 +8,7 @@ public class VIewz
 //	android:layout_height="wrap_content"
 //	android:divider="@color/gray_iphone"
 //	android:dividerHeight="1dp"
+   // android:overScrollMode="never"
 //	android:cacheColorHint="@android:color/transparent"
 //  android:listSelector="@android:color/transparent"
 //	android:id="@+id/lv"/>

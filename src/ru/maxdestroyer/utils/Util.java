@@ -1,13 +1,17 @@
+/*
+ * Copyright (C) 2015 Maxim Smirnov
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ */
+
 package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.app.*;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,34 +30,20 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.StatFs;
+import android.os.*;
 import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.*;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import ru.maxdestroyer.utils.net.HostChecker;
+import ru.maxdestroyer.utils.visual.Vibrate;
+import ru.maxdestroyer.utils.visual.WakeLocker;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -61,16 +51,9 @@ import java.lang.reflect.Method;
 import java.sql.Date;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import ru.maxdestroyer.utils.net.HostChecker;
-import ru.maxdestroyer.utils.visual.Vibrate;
-import ru.maxdestroyer.utils.visual.WakeLocker;
 
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")
@@ -98,11 +81,9 @@ public abstract class Util
 
 	public static void MSGM(final Activity c, final Object text)
 	{
-		c.runOnUiThread(new Runnable()
-		{
+		c.runOnUiThread(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 
 				Toast.makeText(c, String.valueOf(text), Toast.LENGTH_SHORT).show();
 			}
@@ -1263,11 +1244,9 @@ public abstract class Util
 
 	public static void ShowKeyboard(final View v, final Activity context)
 	{
-		v.postDelayed(new Runnable()
-		{
+		v.postDelayed(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.showSoftInput(v, 0);
 			}
@@ -1482,33 +1461,19 @@ public abstract class Util
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
 
-//	public static void initImageLoader()
-//	{
-//		String root = Environment.getExternalStorageDirectory().toString();
-//		DisplayImageOptions options = new DisplayImageOptions.Builder()
-//		  //		  .showImageOnLoading(R.drawable.image_placeholder_interior_and_tovar)
-//		  //		  .showImageForEmptyUri(R.drawable.image_placeholder_interior_and_tovar)
-//		  //		  .showImageOnFail(R.drawable.image_placeholder_interior_and_tovar)
-//		  .cacheInMemory(true)
-//		  .cacheOnDisc(true)
-//		  .delayBeforeLoading(50)
-//		  .bitmapConfig(Bitmap.Config.RGB_565)
-//			//.imageScaleType(ImageScaleType.IN_SAMPLE_INT)
-//		  .build();
-//
-//		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-//		  //.memoryCacheExtraOptions(width / 2, width / 2) // default = device screen dimensions
-//		  .discCacheExtraOptions(0, 0, Bitmap.CompressFormat.JPEG, 75, null)
-//		  .denyCacheImageMultipleSizesInMemory()
-//			//.discCache(new UnlimitedDiscCache(new File(root + MainFrame.PATH + "/")))
-//			//.writeDebugLogs()
-//		  .threadPoolSize(Util.GetApiLvl() < 11 ? 2 : 4)
-//		  .defaultDisplayImageOptions(options)
-//			//.discCacheSize(256 * 1024 * 1024)
-//			//.memoryCache(new WeakMemoryCache()) // 2 Mb
-//			//.discCacheFileCount(500)
-//			//.memoryCache(new WeakMemoryCache())
-//		  .build();
-//		ImageLoader.getInstance().init(config);
-//	}
+	private void ShuffleArray(int[] array)
+	{
+		int index;
+		Random random = new Random();
+		for (int i = array.length - 1; i > 0; i--)
+		{
+			index = random.nextInt(i + 1);
+			if (index != i)
+			{
+				array[index] ^= array[i];
+				array[i] ^= array[index];
+				array[index] ^= array[i];
+			}
+		}
+	}
 }

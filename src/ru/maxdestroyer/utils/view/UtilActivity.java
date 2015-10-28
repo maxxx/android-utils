@@ -17,11 +17,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.lang.reflect.Method;
-
 import ru.maxdestroyer.utils.Util;
 import ru.maxdestroyer.utils.UtilConfig;
+
+import java.lang.reflect.Method;
 
 // ru.maxdestroyer.utils.view.UtilActivity
 @SuppressWarnings("unused")
@@ -44,9 +43,10 @@ public abstract class UtilActivity extends Activity implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		_this = this;
 		GetWandH();
-		cfg = new UtilConfig(this);
+		cfg = new UtilConfig().getInstance().init(this);
 		pDialog = new ProgressDialog(this);
 		handler = new Handler();
 	}

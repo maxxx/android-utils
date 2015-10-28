@@ -19,12 +19,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.ButterKnife;
+import ru.maxdestroyer.utils.UtilConfig;
 
 import java.lang.reflect.Method;
 import java.util.List;
-
-import butterknife.ButterKnife;
-import ru.maxdestroyer.utils.UtilConfig;
 
 // ru.maxdestroyer.utils.view.UtilActivity
 @SuppressWarnings("unused")
@@ -50,7 +49,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 		super.onCreate(savedInstanceState);
 		_this = this;
 		GetWandH();
-		cfg = new UtilConfig(this);
+		cfg = new UtilConfig().getInstance().init(this);
 		pDialog = new ProgressDialog(this);
 		handler = new Handler();
 	}

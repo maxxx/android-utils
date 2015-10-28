@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) 2015 Maxim Smirnov
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ */
 package ru.maxdestroyer.utils;
 
 import android.graphics.Bitmap;
@@ -11,9 +19,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-/**
- * Created by 5 on 04.06.2014.
- */
 public abstract class FileUtil
 {
 	public static void Write(byte[] data, String fileName) throws IOException

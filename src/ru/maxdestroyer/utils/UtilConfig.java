@@ -1,3 +1,12 @@
+/*
+ * Copyright (C) 2015 Maxim Smirnov
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ */
+
 package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
@@ -14,18 +23,27 @@ public class UtilConfig
 	SharedPreferences sPref;
 	Editor ed;
 	private boolean commit = true;
+    private static UtilConfig instance = null;
 
-	public UtilConfig(Context c)
+    public UtilConfig getInstance()
+    {
+        if (instance == null)
+            instance = new UtilConfig();
+        return instance;
+    }
+
+    public UtilConfig()
+    {
+
+    }
+
+	public UtilConfig init(Context c)
 	{
-		Init(c);
+        sPref = c.getSharedPreferences(c.getPackageName(), Context.MODE_PRIVATE);
+        ed = sPref.edit();
+        return this;
 	}
 	
-	private void Init(Context c)
-	{
-		sPref = c.getSharedPreferences(c.getPackageName(), Context.MODE_PRIVATE);
-		ed = sPref.edit();
-	}
-
 	public void Save(String name, String val)
 	{
 		ed.putString(name, val);
