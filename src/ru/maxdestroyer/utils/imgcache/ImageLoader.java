@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import ru.maxdestroyer.utils.Convert;
 import ru.maxdestroyer.utils.Util;
 
 public class ImageLoader // extends AsyncTask<Object, Void, Bitmap>
@@ -45,7 +46,7 @@ public class ImageLoader // extends AsyncTask<Object, Void, Bitmap>
 		
 		final boolean u = useThumb;
 		final boolean r = resize;
-		String fname = Util.ToStr(img_addr.hashCode());
+		String fname = Convert.ToStr(img_addr.hashCode());
 		if (u)
 			fname = "thumb_" + fname;
 		b = LoadCachedImage(fname, path);

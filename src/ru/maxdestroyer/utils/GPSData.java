@@ -30,8 +30,8 @@ public class GPSData
 		lat = loc.getLatitude();
 		lon = loc.getLongitude();
 		height = loc.getAltitude();
-		speed = Util.ToInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
-		direction = Util.ToInt(loc.getBearing());
+		speed = Convert.ToInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
+		direction = Convert.ToInt(loc.getBearing());
 		acc = loc.getAccuracy();
 	}
 	
@@ -44,8 +44,8 @@ public class GPSData
 		lat = loc.getLatitude();
 		lon = loc.getLongitude();
 		height = loc.getAltitude();
-		speed = Util.ToInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
-		direction = Util.ToInt(loc.getBearing());
+		speed = Convert.ToInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
+		direction = Convert.ToInt(loc.getBearing());
 		acc = loc.getAccuracy();
 		satellites = sat;
 	}
@@ -59,8 +59,8 @@ public class GPSData
 		lat = loc.getLatitude();
 		lon = loc.getLongitude();
 		height = loc.getAltitude();
-		speed = Util.ToInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
-		direction = Util.ToInt(loc.getBearing());
+		speed = Convert.ToInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
+		direction = Convert.ToInt(loc.getBearing());
 		acc = loc.getAccuracy();
 	}
 	
