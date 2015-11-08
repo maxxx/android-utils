@@ -78,7 +78,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.maxdestroyer.utils.net.HostChecker;
-import ru.maxdestroyer.utils.visual.Vibrate;
 import ru.maxdestroyer.utils.visual.WakeLocker;
 
 @SuppressLint({ "NewApi", "ServiceCast" })
@@ -463,41 +462,6 @@ public abstract class Util
 //		if (MainFrame.BEEP)
 //			new SoundMgr(con, R.raw.knock, MainFrame.VOLUME, true);
 
-		// android 2
-		if (android.os.Build.VERSION.SDK_INT < 11)
-		{
-			int icon = R.drawable.ic_launcher;
-			CharSequence tickerText = title; // Текст в системной строчке
-												// уведомления
-			long when = System.currentTimeMillis();
-			Notification notification = new Notification(icon, tickerText, when);
-			CharSequence contentTitle = title; // окно уведомлений - заголовок
-			CharSequence contentText = text; // окно уведомлений - тело текста
-			// активити которая вызовется при клике на уведомление
-			Intent intent = new Intent(con, activityToRun);
-			if (extras != null)
-				intent.putExtras(extras);
-			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			PendingIntent pIntent = PendingIntent.getActivity(con, 127, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-			notification.setLatestEventInfo(con, contentTitle, contentText,
-					pIntent);
-
-			notification.flags |= Notification.FLAG_AUTO_CANCEL; // уведомления
-																	// исчезают
-																	// когда
-																	// пользователь
-																	// нажал на
-																	// них
-			if (vib)
-			{
-				// не работает?
-				//notification.flags |= Notification.DEFAULT_VIBRATE;
-				new Vibrate(con, 500);
-			}
-			
-			notificationManager.notify(127, notification);
-		} else // android 4+
 		{
 			// активити которая вызовется при клике на уведомление
 			Intent intent = new Intent(con, activityToRun);
@@ -544,41 +508,6 @@ public abstract class Util
 //		if (MainFrame.BEEP)
 //			new SoundMgr(con, R.raw.knock, MainFrame.VOLUME, true);
 
-		// android 2
-		if (android.os.Build.VERSION.SDK_INT < 11)
-		{
-			int icon = R.drawable.ic_launcher;
-			CharSequence tickerText = title; // Текст в системной строчке
-												// уведомления
-			long when = System.currentTimeMillis();
-			Notification notification = new Notification(icon, tickerText, when);
-			CharSequence contentTitle = title; // окно уведомлений - заголовок
-			CharSequence contentText = text; // окно уведомлений - тело текста
-			// активити которая вызовется при клике на уведомление
-			Intent intent = new Intent(con, activityToRun);
-			if (extras != null)
-				intent.putExtras(extras);
-			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			PendingIntent pIntent = PendingIntent.getActivity(con, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-			notification.setLatestEventInfo(con, contentTitle, contentText,
-					pIntent);
-
-			notification.flags |= Notification.FLAG_AUTO_CANCEL; // уведомления
-																	// исчезают
-																	// когда
-																	// пользователь
-																	// нажал на
-																	// них
-			if (vib)
-			{
-				// не работает?
-				//notification.flags |= Notification.DEFAULT_VIBRATE;
-				new Vibrate(con, 500);
-			}
-			
-			notificationManager.notify(id, notification);
-		} else // android 4+
 		{
 			// активити которая вызовется при клике на уведомление
 			Intent intent = new Intent(con, activityToRun);

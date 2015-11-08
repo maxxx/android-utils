@@ -25,7 +25,7 @@ public class UtilConfig
 	private boolean commit = true;
     private static UtilConfig instance = null;
 
-    public UtilConfig getInstance()
+    public static UtilConfig getInstance()
     {
         if (instance == null)
             instance = new UtilConfig();
