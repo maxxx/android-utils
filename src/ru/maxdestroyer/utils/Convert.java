@@ -30,6 +30,54 @@ import java.util.List;
 
 public abstract class Convert
 {
+	public static int ToInt(Object obj)
+	{
+		if (obj == null || obj.toString().equals(""))
+			return 0;
+
+		return Integer.parseInt(obj.toString());
+	}
+
+	public static int ToInt(float f)
+	{
+		return (int)(Math.round(f));
+	}
+
+	public static String ToStr(int digit)
+	{
+		return Integer.toString(digit);
+	}
+
+	public static String ToStr(float digit)
+	{
+		return Float.toString(digit);
+	}
+
+	public static String ToStr(double digit)
+	{
+		return Double.toString(digit);
+	}
+
+	public static String ToStr(Object digit)
+	{
+		return digit.toString();
+	}
+
+	public static long ToLong(String s)
+	{
+		return Long.parseLong(s);
+	}
+
+	public static double ToDouble(String s)
+	{
+		return Double.parseDouble(s);
+	}
+
+	public static float ToFloat(String s)
+	{
+		return Float.parseFloat(s);
+	}
+
 	// generic
 	public static String[] ObjListToStrArr(ArrayList<String> arr)
 	{

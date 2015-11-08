@@ -10,8 +10,13 @@
 package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
-import android.app.*;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,20 +35,33 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StatFs;
 import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.*;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
-import ru.maxdestroyer.utils.net.HostChecker;
-import ru.maxdestroyer.utils.visual.Vibrate;
-import ru.maxdestroyer.utils.visual.WakeLocker;
+import android.widget.GridView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,9 +69,17 @@ import java.lang.reflect.Method;
 import java.sql.Date;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ru.maxdestroyer.utils.net.HostChecker;
+import ru.maxdestroyer.utils.visual.Vibrate;
+import ru.maxdestroyer.utils.visual.WakeLocker;
 
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")
@@ -79,69 +105,26 @@ public abstract class Util
 		}.start();
 	}
 
+	/**
+	 * from main thread
+	 * @param c
+	 * @param text
+	 */
 	public static void MSGM(final Activity c, final Object text)
 	{
 		c.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
+            @Override
+            public void run() {
 
-				Toast.makeText(c, String.valueOf(text), Toast.LENGTH_SHORT).show();
-			}
-		});
+                Toast.makeText(c, String.valueOf(text), Toast.LENGTH_SHORT).show();
+            }
+        });
 	}
 
 	public static void GoURL(Context c, String url)
 	{
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		c.startActivity(browserIntent);
-	}
-
-	public static int ToInt(Object obj)
-	{
-		if (obj == null || obj.toString().equals(""))
-			return 0;
-		
-		return Integer.parseInt(obj.toString());
-	}
-	
-	public static int ToInt(float f)
-	{
-		return (int)(Math.round(f));
-	}
-
-	public static String ToStr(int digit)
-	{
-		return Integer.toString(digit);
-	}
-	
-	public static String ToStr(float digit)
-	{
-		return Float.toString(digit);
-	}
-	
-	public static String ToStr(double digit)
-	{
-		return Double.toString(digit);
-	}
-
-	public static String ToStr(Object digit)
-	{
-		return digit.toString();
-	}
-	
-	public static long ToLong(String s)
-	{
-		return Long.parseLong(s);
-	}
-	
-	public static double ToDouble(String s)
-	{
-		return Double.parseDouble(s);
-	}
-
-	public static float ToFloat(String s)
-	{
-		return Float.parseFloat(s);
 	}
 
 	// <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -356,7 +339,7 @@ public abstract class Util
 		{
 			try
 			{
-				Thread.sleep(50);
+				Thread.sleep(50L);
 			} catch (InterruptedException e)
 			{
 				e.printStackTrace();
@@ -427,7 +410,7 @@ public abstract class Util
 
 		// Create the bitmap to use to draw the screenshot
 		final Bitmap bitmap = Bitmap
-				.createBitmap(w, h, Bitmap.Config.ARGB_4444);
+				.createBitmap(w, h, Bitmap.Config.RGB_565);
 		final Canvas canvas = new Canvas(bitmap);
 
 		// Get current theme to know which background to use
@@ -442,7 +425,9 @@ public abstract class Util
 		background.draw(canvas);
 
 		// Draw views
+        view.setDrawingCacheEnabled(true);
 		view.draw(canvas);
+        view.setDrawingCacheEnabled(false);
 
 		// Save the screenshot to the file system
 		FileOutputStream fos = null;
@@ -455,7 +440,7 @@ public abstract class Util
 			fos = new FileOutputStream(f);
 			if (fos != null)
 			{
-				if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos))
+				if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos))
 					LOG("Compress/Write failed");
 				fos.flush();
 				fos.close();
@@ -650,8 +635,7 @@ public abstract class Util
 			
 			// MDPI=160, DEFAULT=160, DENSITY_HIGH=240, DENSITY_MEDIUM=160,
 			// DENSITY_TV=213, DENSITY_XHIGH=320
-			if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT
-					|| metrics.densityDpi == DisplayMetrics.DENSITY_HIGH
+			if (metrics.densityDpi == DisplayMetrics.DENSITY_HIGH
 					|| metrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM
 					|| metrics.densityDpi == DisplayMetrics.DENSITY_TV
 					|| metrics.densityDpi == DisplayMetrics.DENSITY_XHIGH)
@@ -733,11 +717,11 @@ public abstract class Util
 	public static long DateToTimestamp(Object year, Object month, Object day, Object hour, Object minute)
 	{
 	    Calendar c = Calendar.getInstance();
-	    c.set(Calendar.YEAR, ToInt(year));
-	    c.set(Calendar.MONTH, ToInt(month));
-	    c.set(Calendar.DAY_OF_MONTH, ToInt(day));
-	    c.set(Calendar.HOUR_OF_DAY, ToInt(hour));
-	    c.set(Calendar.MINUTE, ToInt(minute));
+	    c.set(Calendar.YEAR, Convert.ToInt(year));
+	    c.set(Calendar.MONTH, Convert.ToInt(month));
+	    c.set(Calendar.DAY_OF_MONTH, Convert.ToInt(day));
+	    c.set(Calendar.HOUR_OF_DAY, Convert.ToInt(hour));
+	    c.set(Calendar.MINUTE, Convert.ToInt(minute));
 	    c.set(Calendar.SECOND, 0);
 	    c.set(Calendar.MILLISECOND, 0);
 
@@ -762,16 +746,16 @@ public abstract class Util
 
 	public static long DateToTimestampLong(Object year, Object month, Object day, Object hour, Object minute)
 	{
-		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+4"));
-		c.set(Calendar.YEAR, ToInt(year));
-		c.set(Calendar.MONTH, ToInt(month));
-		c.set(Calendar.DAY_OF_MONTH, ToInt(day));
-		c.set(Calendar.HOUR_OF_DAY, ToInt(hour));
-		c.set(Calendar.MINUTE, ToInt(minute));
+		Calendar c = Calendar.getInstance(TimeZone.getDefault());
+		c.set(Calendar.YEAR, Convert.ToInt(year));
+		c.set(Calendar.MONTH, Convert.ToInt(month));
+		c.set(Calendar.DAY_OF_MONTH, Convert.ToInt(day));
+		c.set(Calendar.HOUR_OF_DAY, Convert.ToInt(hour));
+		c.set(Calendar.MINUTE, Convert.ToInt(minute));
 		c.set(Calendar.SECOND, 0);
 		c.set(Calendar.MILLISECOND, 0);
 
-		return (c.getTimeInMillis() / 1000);
+		return c.getTimeInMillis() / 1000;
 	}
 	
 	public static String GetCurDate()
@@ -779,7 +763,7 @@ public abstract class Util
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	    Calendar cal = Calendar.getInstance();
 
-	    return (dateFormat.format(cal.getTime()));
+	    return dateFormat.format(cal.getTime());
 	}
 
 	public static Date TimestampToDate(long ts)
@@ -804,7 +788,11 @@ public abstract class Util
 		java.util.Date stringDate = new java.util.Date(simpledateformat.parse(aDate, pos).getTime());
 		return stringDate;
 	}
-	
+
+    /**
+     * visible/gone
+     * @param v
+     */
 	public static void ToggleVisibility(View v)
 	{
 		if (v.getVisibility() == View.VISIBLE)
@@ -813,6 +801,10 @@ public abstract class Util
 			v.setVisibility(View.VISIBLE);
 	}
 
+    /**
+     * visible/invisible
+     * @param v
+     */
 	public static void ToggleVisibility2(View v)
 	{
 		if (v.getVisibility() == View.VISIBLE)
@@ -826,9 +818,9 @@ public abstract class Util
 		return c.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT;
 	}
 	
-	public static void ExpandList(ListView listView, boolean sposob)
+	public static void ExpandList(ListView listView, boolean noAdapter)
 	{
-		if (sposob)
+		if (noAdapter)
 		{
 			int totalHeight = 0;
 			for (int i = 0; i < listView.getChildCount(); ++i)
@@ -986,13 +978,18 @@ public abstract class Util
 
 	public static String GetPhoneNumber(Context c)
 	{
-		TelephonyManager mTelephonyMgr;
-		mTelephonyMgr = (TelephonyManager) c
-				.getSystemService(Context.TELEPHONY_SERVICE);
-		return mTelephonyMgr.getLine1Number();
+        TelephonyManager mTelephonyMgr = (TelephonyManager) c
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        return mTelephonyMgr.getLine1Number();
 	}
 	
 	// <uses-permission android:name="android.permission.GET_TASKS" />
+
+    /**
+     * on;y self task after lolipop!
+     * @param ctx
+     * @return
+     */
 	public static boolean IsTaskRunning(Context ctx)
 	{
 		ActivityManager activityManager = (ActivityManager) ctx
@@ -1038,12 +1035,12 @@ public abstract class Util
 
 	public static int currentTimeMillis()
 	{
-		return (int) (System.currentTimeMillis() / 1000 & 0x00000000FFFFFFFFL);
+		return (int) (System.currentTimeMillis() / 1000L & 0x00000000FFFFFFFFL);
 	}
 
 	public static int TimeToInt(long time)
 	{
-		return (int) (time / 1000 & 0x00000000FFFFFFFFL);
+		return (int) (time / 1000L & 0x00000000FFFFFFFFL);
 	}
 	
 	// в метрах
@@ -1119,18 +1116,15 @@ public abstract class Util
 				(int) (root.getPaddingRight() * scale),
 				(int) (root.getPaddingBottom() * scale));
 		// If the root view is a TextView, scale the size of its text
+
 		if (root instanceof TextView)
 		{
 			TextView textView = (TextView) root;
 			textView.setTextSize(textView.getTextSize() * scale);
-		} else if (root instanceof EditText)
-		{
-			EditText textView = (EditText) root;
-			textView.setTextSize(textView.getTextSize() * scale);
 		}
 		// If the root view is a ViewGroup, scale all of its children
 		// recursively
-		if (root instanceof ViewGroup)
+		else if (root instanceof ViewGroup)
 		{
 			ViewGroup groupView = (ViewGroup) root;
 			for (int cnt = 0; cnt < groupView.getChildCount(); ++cnt)
@@ -1173,10 +1167,6 @@ public abstract class Util
 		if (root instanceof TextView)
 		{
 			TextView textView = (TextView) root;
-			textView.setTextSize(textView.getTextSize() * fontS);
-		} else if (root instanceof EditText)
-		{
-			EditText textView = (EditText) root;
 			textView.setTextSize(textView.getTextSize() * fontS);
 		}
 		// If the root view is a ViewGroup, scale all of its children
@@ -1225,12 +1215,21 @@ public abstract class Util
 		}
 	}
 	
-	public static long GetFreeMemory()
+	public static long GetFreeExternalMemory()
 	{
 		File path = Environment.getDataDirectory();
 		StatFs stat = new StatFs(path.getPath());
-		long blockSize = stat.getBlockSize();
-		long availableBlocks = stat.getAvailableBlocks();
+        long blockSize;
+        long availableBlocks;
+        if (GetApiLvl() >= 18)
+        {
+            blockSize = stat.getBlockSizeLong();
+            availableBlocks = stat.getAvailableBlocksLong();
+        } else {
+            blockSize = stat.getBlockSize();
+            availableBlocks = stat.getAvailableBlocks();
+        }
+
 		return availableBlocks * blockSize;
 	}
 	
@@ -1286,7 +1285,8 @@ public abstract class Util
 					.setNegativeButton("Нет",
 							new DialogInterface.OnClickListener()
 							{
-								public void onClick(final DialogInterface dialog,
+								@Override
+                                public void onClick(final DialogInterface dialog,
 										final int id)
 								{
 									dialog.dismiss();
@@ -1423,6 +1423,12 @@ public abstract class Util
 		return five;
 	}
 
+    /**
+     * Find index of occurence of source in strings
+     * @param source
+     * @param strings
+     * @return index of found item or -1 if not found
+     */
 	public static int FindIn(String source, String[] strings)
 	{
 		for (int i = 0; i < strings.length; i++)
@@ -1430,7 +1436,7 @@ public abstract class Util
 			if (source.equals(strings[i]))
 				return i;
 		}
-		return 0;
+		return -1;
 	}
 
 	public static void Rotate(View v, float degree)
@@ -1461,7 +1467,7 @@ public abstract class Util
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
 
-	private void ShuffleArray(int[] array)
+    public static void ShuffleArray(int[] array)
 	{
 		int index;
 		Random random = new Random();
