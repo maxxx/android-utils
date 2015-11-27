@@ -11,11 +11,15 @@ package ru.maxdestroyer.utils.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.Util;
 
-public class UtilFragment extends Fragment implements View.OnClickListener
+public abstract class UtilFragment extends Fragment implements View.OnClickListener
 {
 	protected Context context;
 	protected View fv = null;
@@ -30,14 +34,20 @@ public class UtilFragment extends Fragment implements View.OnClickListener
 	   this.context = context;
 	}
 
-//	@Override
-//	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//	  Bundle savedInstanceState) {
-//
-//		View rootView = inflater.inflate(R.layout.f_settings, container, false);
-//
-//		return rootView;
-//	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(
+                getLayout(), container, false);
+        ButterKnife.bind(this, v);
+        onCreateView(v);
+        return v;
+    }
+
+    protected void onCreateView(final View view) {
+
+    }
+
+    protected abstract int getLayout();
 
 	@Override
 	public void onClick(View v)

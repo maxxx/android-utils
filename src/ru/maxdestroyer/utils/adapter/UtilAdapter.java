@@ -75,10 +75,8 @@ public class UtilAdapter<T> extends BaseAdapter {
 
     /**
      * Additional processing
-     *  @param currentItem
-     * @param view
      */
-    protected void onGetView(final T currentItem, final BaseViewHolder view) {
+    protected void onGetView(final T currentItem, final BaseViewHolder baseHolder) {
 
     }
 
