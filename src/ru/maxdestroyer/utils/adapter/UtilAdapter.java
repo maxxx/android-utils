@@ -54,12 +54,12 @@ public class UtilAdapter<T> extends BaseAdapter {
             holder = (BaseViewHolder) convertView.getTag();
         } else {
             convertView = context.getLayoutInflater().inflate(row, parent, false);
-            holder = new BaseViewHolder(convertView);
+            holder = initHolder(convertView);
             convertView.setTag(holder);
         }
 
         AnnProcessor.fillView(currentItem, holder.view);
-        onGetView(currentItem, holder.view);
+        onGetView(currentItem, holder);
 
 //        if (position == getCount() - 1 && getCount() < totalCount)
 //        {
@@ -69,18 +69,21 @@ public class UtilAdapter<T> extends BaseAdapter {
         return convertView;
     }
 
+    protected BaseViewHolder initHolder(final View convertView) {
+        return new BaseViewHolder(convertView);
+    }
+
     /**
      * Additional processing
-     *
-     * @param currentItem
+     *  @param currentItem
      * @param view
      */
-    private void onGetView(final T currentItem, final View view) {
+    protected void onGetView(final T currentItem, final BaseViewHolder view) {
 
     }
 
-    private class BaseViewHolder {
-        private final View view;
+    protected static class BaseViewHolder {
+        protected final View view;
 
         public BaseViewHolder(final View view) {
             this.view = view;
