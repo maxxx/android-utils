@@ -3,13 +3,12 @@ package ru.maxdestroyer.utils.net;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.TextView;
+import ru.maxdestroyer.utils.activity.UtilActivity;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import ru.maxdestroyer.utils.view.UtilActivity;
 
 // <uses-permission android:name="android.permission.INTERNET" />
 // берет по URL данные в чистом формате

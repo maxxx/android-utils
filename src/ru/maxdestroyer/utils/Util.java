@@ -10,13 +10,8 @@
 package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.app.*;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,33 +30,19 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.StatFs;
+import android.os.*;
 import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.*;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.GridView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import ru.maxdestroyer.utils.net.HostChecker;
+import ru.maxdestroyer.utils.visual.WakeLocker;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,17 +50,9 @@ import java.lang.reflect.Method;
 import java.sql.Date;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import ru.maxdestroyer.utils.net.HostChecker;
-import ru.maxdestroyer.utils.visual.Vibrate;
-import ru.maxdestroyer.utils.visual.WakeLocker;
 
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")
@@ -463,41 +436,6 @@ public abstract class Util
 //		if (MainFrame.BEEP)
 //			new SoundMgr(con, R.raw.knock, MainFrame.VOLUME, true);
 
-		// android 2
-		if (android.os.Build.VERSION.SDK_INT < 11)
-		{
-			int icon = R.drawable.ic_launcher;
-			CharSequence tickerText = title; // Текст в системной строчке
-												// уведомления
-			long when = System.currentTimeMillis();
-			Notification notification = new Notification(icon, tickerText, when);
-			CharSequence contentTitle = title; // окно уведомлений - заголовок
-			CharSequence contentText = text; // окно уведомлений - тело текста
-			// активити которая вызовется при клике на уведомление
-			Intent intent = new Intent(con, activityToRun);
-			if (extras != null)
-				intent.putExtras(extras);
-			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			PendingIntent pIntent = PendingIntent.getActivity(con, 127, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-			notification.setLatestEventInfo(con, contentTitle, contentText,
-					pIntent);
-
-			notification.flags |= Notification.FLAG_AUTO_CANCEL; // уведомления
-																	// исчезают
-																	// когда
-																	// пользователь
-																	// нажал на
-																	// них
-			if (vib)
-			{
-				// не работает?
-				//notification.flags |= Notification.DEFAULT_VIBRATE;
-				new Vibrate(con, 500);
-			}
-			
-			notificationManager.notify(127, notification);
-		} else // android 4+
 		{
 			// активити которая вызовется при клике на уведомление
 			Intent intent = new Intent(con, activityToRun);
@@ -544,41 +482,6 @@ public abstract class Util
 //		if (MainFrame.BEEP)
 //			new SoundMgr(con, R.raw.knock, MainFrame.VOLUME, true);
 
-		// android 2
-		if (android.os.Build.VERSION.SDK_INT < 11)
-		{
-			int icon = R.drawable.ic_launcher;
-			CharSequence tickerText = title; // Текст в системной строчке
-												// уведомления
-			long when = System.currentTimeMillis();
-			Notification notification = new Notification(icon, tickerText, when);
-			CharSequence contentTitle = title; // окно уведомлений - заголовок
-			CharSequence contentText = text; // окно уведомлений - тело текста
-			// активити которая вызовется при клике на уведомление
-			Intent intent = new Intent(con, activityToRun);
-			if (extras != null)
-				intent.putExtras(extras);
-			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			PendingIntent pIntent = PendingIntent.getActivity(con, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-			notification.setLatestEventInfo(con, contentTitle, contentText,
-					pIntent);
-
-			notification.flags |= Notification.FLAG_AUTO_CANCEL; // уведомления
-																	// исчезают
-																	// когда
-																	// пользователь
-																	// нажал на
-																	// них
-			if (vib)
-			{
-				// не работает?
-				//notification.flags |= Notification.DEFAULT_VIBRATE;
-				new Vibrate(con, 500);
-			}
-			
-			notificationManager.notify(id, notification);
-		} else // android 4+
 		{
 			// активити которая вызовется при клике на уведомление
 			Intent intent = new Intent(con, activityToRun);

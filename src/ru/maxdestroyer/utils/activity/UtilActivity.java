@@ -1,4 +1,13 @@
-package ru.maxdestroyer.utils.view;
+/*
+ * Copyright (C) 2015 Maxim Smirnov
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ */
+
+package ru.maxdestroyer.utils.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,7 +31,7 @@ import ru.maxdestroyer.utils.UtilConfig;
 
 import java.lang.reflect.Method;
 
-// ru.maxdestroyer.utils.view.UtilActivity
+// ru.maxdestroyer.utils.activity.UtilActivity
 @SuppressWarnings("unused")
 public abstract class UtilActivity extends Activity implements OnClickListener
 {

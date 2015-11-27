@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.TextView;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
@@ -29,6 +28,9 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import ru.maxdestroyer.utils.Convert;
+import ru.maxdestroyer.utils.Util;
+import ru.maxdestroyer.utils.activity.UtilActivity;
 
 import java.io.File;
 import java.io.InputStream;
@@ -37,10 +39,6 @@ import java.net.URL;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
-
-import ru.maxdestroyer.utils.Convert;
-import ru.maxdestroyer.utils.Util;
-import ru.maxdestroyer.utils.view.UtilActivity;
 
 //import org.apache.http.entity.mime.HttpMultipartMode;
 //import org.apache.http.entity.mime.MultipartEntityBuilder;

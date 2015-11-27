@@ -1,10 +1,18 @@
-package ru.maxdestroyer.utils.view;
+/*
+ * Copyright (C) 2015 Maxim Smirnov
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ */
+
+package ru.maxdestroyer.utils.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.View;
-
 import ru.maxdestroyer.utils.Util;
 
 public class UtilFragment extends Fragment implements View.OnClickListener

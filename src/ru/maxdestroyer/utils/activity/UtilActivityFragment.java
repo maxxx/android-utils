@@ -1,4 +1,13 @@
-package ru.maxdestroyer.utils.view;
+/*
+ * Copyright (C) 2015 Maxim Smirnov
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ */
+
+package ru.maxdestroyer.utils.activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -21,11 +30,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.UtilConfig;
+import ru.maxdestroyer.utils.fragment.UtilFragment;
 
 import java.lang.reflect.Method;
 import java.util.List;
 
-// ru.maxdestroyer.utils.view.UtilActivity
+// ru.maxdestroyer.utils.activity.UtilActivity
 @SuppressWarnings("unused")
 public abstract class UtilActivityFragment extends FragmentActivity implements OnClickListener
 {
@@ -274,7 +284,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 		});
 	}
 
-	public ru.maxdestroyer.utils.view.UtilFragment getVisibleFragment()
+	public UtilFragment getVisibleFragment()
 	{
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		List<Fragment> fragments = fragmentManager.getFragments();
@@ -282,8 +292,9 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 			return null;
 		for (Fragment fragment : fragments)
 		{
-			if (fragment != null && fragment.isVisible())
-				return (ru.maxdestroyer.utils.view.UtilFragment) fragment;
+			if (fragment != null && fragment.isVisible()) {
+				return (UtilFragment) fragment;
+			}
 		}
 		return null;
 	}
