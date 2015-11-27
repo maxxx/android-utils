@@ -54,6 +54,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.maxdestroyer.utils.net.HostChecker;
+import ru.maxdestroyer.utils.visual.WakeLocker;
+
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")
 public abstract class Util
