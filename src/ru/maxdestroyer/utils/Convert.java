@@ -13,20 +13,18 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public abstract class Convert
 {
@@ -290,4 +288,77 @@ public abstract class Convert
 
 		return buffer.toByteArray();
 	}
+
+    /**
+     * DATE
+     */
+    public static Date TimestampToDate(long ts) {
+        Date netDate = new Date(ts); // GMT 0
+        return netDate;
+    }
+
+    public static String TimestampToDate(long ts, String format) {
+        Calendar cldr = Calendar.getInstance();
+        cldr.setTime(new Date(ts));
+        SimpleDateFormat date = new SimpleDateFormat(format);
+        date.setTimeZone(cldr.getTimeZone());
+        return date.format(cldr.getTime());
+    }
+
+    public static java.util.Date StrToDate(String aDate, String aFormat) {
+        ParsePosition pos = new ParsePosition(0);
+        SimpleDateFormat simpledateformat = new SimpleDateFormat(aFormat);
+        java.util.Date stringDate = new java.util.Date(simpledateformat.parse(aDate, pos).getTime());
+        return stringDate;
+    }
+
+    public static String dateConvert(String date, String dateformat, String reqDateFormat)
+            throws ParseException {
+        DateFormat datef = new SimpleDateFormat(dateformat);
+        java.util.Date d = datef.parse(date);
+        long ts = DateToTimestamp(d);
+        String finalDate = TimestampToDate(ts, reqDateFormat);
+        return finalDate;
+    }
+
+    public static long DateToTimestamp(Object year, Object month, Object day, Object hour, Object minute) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, Convert.ToInt(year));
+        c.set(Calendar.MONTH, Convert.ToInt(month));
+        c.set(Calendar.DAY_OF_MONTH, Convert.ToInt(day));
+        c.set(Calendar.HOUR_OF_DAY, Convert.ToInt(hour));
+        c.set(Calendar.MINUTE, Convert.ToInt(minute));
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        return c.getTimeInMillis();
+    }
+
+//	public static int DateToTimestamp(java.util.Date d)
+//	{
+//		Calendar c = Calendar.getInstance();
+//		c.setTime(d);
+//
+//		return (int) (c.getTimeInMillis() / 1000L);
+//	}
+
+    public static long DateToTimestamp(java.util.Date d) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+
+        return (c.getTimeInMillis());
+    }
+
+    public static long DateToTimestampLong(Object year, Object month, Object day, Object hour, Object minute) {
+        Calendar c = Calendar.getInstance(TimeZone.getDefault());
+        c.set(Calendar.YEAR, Convert.ToInt(year));
+        c.set(Calendar.MONTH, Convert.ToInt(month));
+        c.set(Calendar.DAY_OF_MONTH, Convert.ToInt(day));
+        c.set(Calendar.HOUR_OF_DAY, Convert.ToInt(hour));
+        c.set(Calendar.MINUTE, Convert.ToInt(minute));
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        return c.getTimeInMillis() / 1000;
+    }
 }

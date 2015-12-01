@@ -47,15 +47,13 @@ import ru.maxdestroyer.utils.visual.WakeLocker;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
-import java.sql.Date;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import ru.maxdestroyer.utils.net.HostChecker;
-import ru.maxdestroyer.utils.visual.WakeLocker;
 
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")
@@ -620,79 +618,12 @@ public abstract class Util
 		return screenDiagonal;
 	}
 
-	public static long DateToTimestamp(Object year, Object month, Object day, Object hour, Object minute)
-	{
-	    Calendar c = Calendar.getInstance();
-	    c.set(Calendar.YEAR, Convert.ToInt(year));
-	    c.set(Calendar.MONTH, Convert.ToInt(month));
-	    c.set(Calendar.DAY_OF_MONTH, Convert.ToInt(day));
-	    c.set(Calendar.HOUR_OF_DAY, Convert.ToInt(hour));
-	    c.set(Calendar.MINUTE, Convert.ToInt(minute));
-	    c.set(Calendar.SECOND, 0);
-	    c.set(Calendar.MILLISECOND, 0);
-
-	    return c.getTimeInMillis();
-	}
-
-	public static int DateToTimestamp(java.util.Date d)
-	{
-		Calendar c = Calendar.getInstance();
-		c.setTime(d);
-
-		return (int) (c.getTimeInMillis() / 1000L);
-	}
-
-	public static long DateToTimestampLong(java.util.Date d)
-	{
-		Calendar c = Calendar.getInstance();
-		c.setTime(d);
-
-		return (c.getTimeInMillis());
-	}
-
-	public static long DateToTimestampLong(Object year, Object month, Object day, Object hour, Object minute)
-	{
-		Calendar c = Calendar.getInstance(TimeZone.getDefault());
-		c.set(Calendar.YEAR, Convert.ToInt(year));
-		c.set(Calendar.MONTH, Convert.ToInt(month));
-		c.set(Calendar.DAY_OF_MONTH, Convert.ToInt(day));
-		c.set(Calendar.HOUR_OF_DAY, Convert.ToInt(hour));
-		c.set(Calendar.MINUTE, Convert.ToInt(minute));
-		c.set(Calendar.SECOND, 0);
-		c.set(Calendar.MILLISECOND, 0);
-
-		return c.getTimeInMillis() / 1000;
-	}
-	
 	public static String GetCurDate()
 	{
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	    Calendar cal = Calendar.getInstance();
 
 	    return dateFormat.format(cal.getTime());
-	}
-
-	public static Date TimestampToDate(long ts)
-	{
-		Date netDate = new Date(ts); // GMT 0
-		return netDate;
-	}
-	
-	public static String TimestampToDate(long ts, String format)
-	{
-		Calendar cldr = Calendar.getInstance();
-		cldr.setTime(new Date(ts));
-		SimpleDateFormat date = new SimpleDateFormat(format);
-		date.setTimeZone(cldr.getTimeZone());
-		return date.format(cldr.getTime());
-	}
-
-	public static java.util.Date StrToDate(String aDate, String aFormat)
-	{
-		ParsePosition pos = new ParsePosition(0);
-		SimpleDateFormat simpledateformat = new SimpleDateFormat(aFormat);
-		java.util.Date stringDate = new java.util.Date(simpledateformat.parse(aDate, pos).getTime());
-		return stringDate;
 	}
 
     /**

@@ -22,27 +22,27 @@ import ru.maxdestroyer.utils.R;
 /**
  * Created by Maxim Smirnov on 27.11.15.
  */
-public class UtilBGService extends Service {
+public abstract class UtilBGService extends Service {
     private static final String TAG = "LocationSvc";
-    private final Class activtiyClass;
-    private final String text;
-    private final String title;
+    protected Class activtiyClass;
+    protected String text;
+    protected String title;
     private NotificationManager mNM;
 
-    public UtilBGService(String text, String title, Class activtiyClass) {
-        this.text = text;
-        this.title = title;
-        this.activtiyClass = activtiyClass;
+    public UtilBGService() {
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        parseIntent(intent);
         showNotification();
 
         return Service.START_STICKY;
         //return super.onStartCommand(intent, flags, startId);
     }
+
+    protected abstract void parseIntent(final Intent intent);
 
     @Override
     public IBinder onBind(Intent intent) {

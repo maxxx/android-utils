@@ -59,7 +59,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 		super.onCreate(savedInstanceState);
 		_this = this;
 		GetWandH();
-		cfg = new UtilConfig().getInstance().init(this);
+		cfg = UtilConfig.getInstance().init(this);
 		pDialog = new ProgressDialog(this);
 		handler = new Handler();
 	}

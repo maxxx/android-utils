@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.Util;
 import ru.maxdestroyer.utils.UtilConfig;
 
@@ -51,12 +52,28 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (getLayoutId() != 0) {
+            setContentView(getLayoutId());
+        }
         _this = this;
         GetWandH();
         cfg = UtilConfig.getInstance().init(this);
         pDialog = new ProgressDialog(this);
         handler = new Handler();
     }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        ButterKnife.bind(this);
+    }
+
+    /**
+     * Layout id
+     *
+     * @return can be 0
+     */
+    protected abstract int getLayoutId();
 
     protected void MSG(Object text) {
         if (msg_queued) {
@@ -295,4 +312,6 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
 }
