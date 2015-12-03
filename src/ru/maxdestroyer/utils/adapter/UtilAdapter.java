@@ -20,9 +20,9 @@ import java.util.ArrayList;
 
 public class UtilAdapter<T> extends BaseAdapter {
 
-    private final Activity context;
+    protected final Activity context;
     private final int row;
-    ArrayList<T> data = new ArrayList<>();
+    protected ArrayList<T> data = new ArrayList<>();
 
     public UtilAdapter(final Activity context, final ArrayList<T> data, int row) {
         this.context = context;
@@ -43,6 +43,12 @@ public class UtilAdapter<T> extends BaseAdapter {
     @Override
     public long getItemId(final int i) {
         return i;
+    }
+
+
+    public void setData(final ArrayList<T> tasks) {
+        this.data = tasks;
+        notifyDataSetChanged();
     }
 
     @Override
