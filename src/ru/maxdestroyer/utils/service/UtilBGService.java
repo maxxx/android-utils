@@ -17,7 +17,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import ru.maxdestroyer.utils.R;
 
 /**
  * Created by Maxim Smirnov on 27.11.15.
@@ -44,6 +43,8 @@ public abstract class UtilBGService extends Service {
 
     protected abstract void parseIntent(final Intent intent);
 
+    protected abstract int getIcon();
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -58,7 +59,7 @@ public abstract class UtilBGService extends Service {
 
         // Set the info for the views that show in the notification panel.
         Notification.Builder notificationB = new Notification.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)  // the status icon
+                .setSmallIcon(getIcon())  // the status icon
                 .setTicker(text)  // the status text
                 .setWhen(System.currentTimeMillis())  // the time stamp
                 .setContentTitle(title)  // the label of the entry
