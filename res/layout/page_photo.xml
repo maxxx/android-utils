@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_launcher"
+                android:src="@drawable/ic_launcher_def"
                 android:id="@+id/ivFoto"/>
     </RelativeLayout>
 

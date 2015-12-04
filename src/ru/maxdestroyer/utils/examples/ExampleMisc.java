@@ -32,7 +32,7 @@ public class ExampleMisc
 //	TextView text = (TextView) dialog.findViewById(R.id.text);
 //	text.setText("Android custom dialog example!");
 //	ImageView image = (ImageView) dialog.findViewById(R.id.image);
-//	image.setImageResource(R.drawable.ic_launcher);
+//	image.setImageResource(R.drawable.ic_launcher_def);
 //
 //	Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
 

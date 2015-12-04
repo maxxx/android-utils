@@ -447,7 +447,7 @@ public abstract class Util
 
 			NotificationCompat.Builder noti = new NotificationCompat.Builder(con)
 					.setContentTitle(title).setContentText(text)
-					.setSmallIcon(R.drawable.ic_launcher).setContentIntent(pIntent);
+					.setSmallIcon(R.drawable.ic_launcher_def).setContentIntent(pIntent);
 			noti.setContentInfo(title);
 			
 			Notification not = noti.build();
@@ -493,7 +493,7 @@ public abstract class Util
 
 			NotificationCompat.Builder noti = new NotificationCompat.Builder(con)
 					.setContentTitle(title).setContentText(text)
-					.setSmallIcon(R.drawable.ic_launcher).setContentIntent(pIntent);
+					.setSmallIcon(R.drawable.ic_launcher_def).setContentIntent(pIntent);
 			noti.setContentInfo(title);
 			
 			Notification not = noti.build();

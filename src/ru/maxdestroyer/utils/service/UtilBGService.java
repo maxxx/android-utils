@@ -22,7 +22,7 @@ import android.os.IBinder;
  * Created by Maxim Smirnov on 27.11.15.
  */
 public abstract class UtilBGService extends Service {
-    private static final String TAG = "LocationSvc";
+    private static final String TAG = "UtilBGService";
     protected Class activtiyClass;
     protected String text;
     protected String title;
@@ -60,6 +60,7 @@ public abstract class UtilBGService extends Service {
         // Set the info for the views that show in the notification panel.
         Notification.Builder notificationB = new Notification.Builder(this)
                 .setSmallIcon(getIcon())  // the status icon
+                //.setLargeIcon(Icon.createWithResource(this, getIcon()))
                 .setTicker(text)  // the status text
                 .setWhen(System.currentTimeMillis())  // the time stamp
                 .setContentTitle(title)  // the label of the entry
