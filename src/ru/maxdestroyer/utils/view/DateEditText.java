@@ -102,6 +102,7 @@ public class DateEditText extends AppCompatEditText
                         }
                     });
             custom.setDate(Calendar.getInstance());
+            custom.showDialog();
         }
     }
 
