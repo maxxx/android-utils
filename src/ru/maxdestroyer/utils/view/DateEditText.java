@@ -59,7 +59,7 @@ public class DateEditText extends AppCompatEditText
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        SimpleDateFormat sdformat = new SimpleDateFormat(format, Locale.US);
+        SimpleDateFormat sdformat = new SimpleDateFormat(getFormat(), Locale.US);
         myCalendar.set(Calendar.YEAR, year);
         myCalendar.set(Calendar.MONTH, monthOfYear);
         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);

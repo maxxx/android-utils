@@ -12,19 +12,29 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.widget.ImageView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
 
 public abstract class Convert
 {
@@ -63,16 +73,24 @@ public abstract class Convert
 
 	public static long ToLong(String s)
 	{
-		return Long.parseLong(s);
+        if (TextUtils.isEmpty(s))
+            return 0;
+        return Long.parseLong(s);
 	}
 
 	public static double ToDouble(String s)
 	{
+        if (TextUtils.isEmpty(s))
+            return 0.0;
+
 		return Double.parseDouble(s);
 	}
 
 	public static float ToFloat(String s)
 	{
+        if (TextUtils.isEmpty(s))
+            return 0.0f;
+
 		return Float.parseFloat(s);
 	}
 
@@ -84,9 +102,8 @@ public abstract class Convert
 			list[i] = arr.get(i).toString();
 		return list;
 	}
-	
-	public static String ListToString(List<? extends Object> arr, boolean ws)
-	{
+
+    public static String ListToString(List<?> arr, boolean ws) {
 		if (arr.size() > 0)
 		{
 			StringBuilder nameBuilder = new StringBuilder();
