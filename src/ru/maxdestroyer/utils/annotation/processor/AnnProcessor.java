@@ -14,9 +14,11 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import ru.maxdestroyer.utils.annotation.BindView;
 
 import java.lang.reflect.Field;
+
+import ru.maxdestroyer.utils.Util;
+import ru.maxdestroyer.utils.annotation.BindView;
 
 public class AnnProcessor {
     public static void fillView(final Object entity, View base) {
@@ -60,7 +62,8 @@ public class AnnProcessor {
                             ((TextView) view).setText(f.get(entity).toString());
                         }
                     } else {
-                        throw new RuntimeException("AnnProcessor:fillView: view not found! " + f.getName());
+                        //throw new RuntimeException("AnnProcessor:fillView: view not found! " + f.getName());
+                        Util.LOGV("AnnProcessor:fillView: view not found! " + f.getName());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -90,7 +93,8 @@ public class AnnProcessor {
                             f.set(entity, ((TextView) view).getText().toString());
                         }
                     } else {
-                        throw new RuntimeException("AnnProcessor:parseView: view not found! " + f.getName());
+                        //throw new RuntimeException("AnnProcessor:parseView: view not found! " + f.getName());
+                        Util.LOGV("AnnProcessor:parseView: view not found! " + f.getName());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
