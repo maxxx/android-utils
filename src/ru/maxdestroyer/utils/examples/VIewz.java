@@ -9,6 +9,8 @@ public class VIewz
 //	android:divider="@color/gray_iphone"
 //	android:dividerHeight="1dp"
    // android:overScrollMode="never"
+//    android:fadingEdge="none"
+//    android:fadingEdgeLength="0dp"
 //	android:cacheColorHint="@android:color/transparent"
 //  android:listSelector="@android:color/transparent"
 //	android:id="@+id/lv"/>
@@ -19,17 +21,30 @@ public class VIewz
 //	android:layout_marginRight="-10dp"
 //  />
 
-//	<android.support.v4.view.ViewPager
-//	android:layout_width="match_parent"
-//	android:layout_height="300dp"
-//	android:id="@+id/vpPhoto"/>
+//    <android.support.v4.view.ViewPager
+//    android:layout_width="match_parent"
+//    android:layout_height="match_parent"
+//    android:id="@+id/vpPhoto" />
 //
-//	<ru.maxdestroyer.utils.view.CirclePageIndicator
-//	android:id="@+id/indicator"
-//	android:layout_width="fill_parent"
-//	app:fillColor="@color/text_pink"
-//	app:pageColor="#b7c0ca"
-//	android:layout_height="wrap_content"
-//	android:layout_alignBottom="@+id/vpPhoto"
-//	android:paddingBottom="10dp"/>
+//    <ru.maxdestroyer.utils.view.CirclePageIndicator
+//    android:id="@+id/indicator"
+//    android:layout_width="fill_parent"
+//    app:fillColor="@color/colorPrimary"
+//    app:pageColor="#b7c0ca"
+//    android:layout_height="wrap_content"
+//    android:layout_alignBottom="@+id/vpPhoto"
+//    android:paddingBottom="10dp"/>
+
+//    <GridView
+//    android:id="@+id/gvGallery"
+//    android:layout_width="match_parent"
+//    android:layout_height="match_parent"
+//    android:horizontalSpacing="5dp"
+//    android:verticalSpacing="5dp"
+//    android:cacheColorHint="@android:color/transparent"
+//    android:listSelector="@android:color/transparent"
+//    android:overScrollMode="never"
+//    android:fadingEdge="none"
+//    android:fadingEdgeLength="0dp"
+//    android:numColumns="2" />
 }

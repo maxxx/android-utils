@@ -17,6 +17,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,11 +28,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.reflect.Method;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.Util;
 import ru.maxdestroyer.utils.UtilConfig;
-
-import java.lang.reflect.Method;
+import ru.maxdestroyer.utils.fragment.UtilFragment;
 
 // ru.maxdestroyer.utils.activity.UtilActivity
 @SuppressWarnings("unused")
@@ -166,6 +171,23 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
 
     @Override
     public void onClick(View arg0) {
+        final Fragment f = getVisibleFragment();
+        if (f instanceof UtilFragment)
+            ((UtilFragment) f).onClick(arg0);
+    }
+
+    public Fragment getVisibleFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if (fragments == null) {
+            return null;
+        }
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment.isVisible()) {
+                return fragment;
+            }
+        }
+        return null;
     }
 
     public String S(int res) {
