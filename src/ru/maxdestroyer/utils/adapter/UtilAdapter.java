@@ -65,7 +65,7 @@ public class UtilAdapter<T> extends BaseAdapter {
         }
 
         AnnProcessor.fillView(currentItem, holder.view);
-        onGetView(currentItem, holder);
+        onGetView(currentItem, holder, position);
 
 //        if (position == getCount() - 1 && getCount() < totalCount)
 //        {
@@ -82,7 +82,7 @@ public class UtilAdapter<T> extends BaseAdapter {
     /**
      * Additional processing
      */
-    protected void onGetView(final T currentItem, final BaseViewHolder baseHolder) {
+    protected void onGetView(final T currentItem, final BaseViewHolder baseHolder, final int position) {
 
     }
 
