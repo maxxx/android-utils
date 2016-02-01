@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.TextView;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
@@ -28,9 +29,6 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import ru.maxdestroyer.utils.Convert;
-import ru.maxdestroyer.utils.Util;
-import ru.maxdestroyer.utils.activity.UtilActivity;
 
 import java.io.File;
 import java.io.InputStream;
@@ -39,6 +37,10 @@ import java.net.URL;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.maxdestroyer.utils.Convert;
+import ru.maxdestroyer.utils.Util;
+import ru.maxdestroyer.utils.activity.UtilActivity;
 
 //import org.apache.http.entity.mime.HttpMultipartMode;
 //import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -117,8 +119,8 @@ public class PostLoader extends Thread
     			response = JSONPost(url, json, vars, varNames);
     		} catch (Exception e)
     		{
-    			Util.LOG("PostLoader ex. url =  " + url + " . Json = " + json + ". e = " + e.toString());
-    			CancelDial();
+				Util.log("PostLoader ex. url =  " + url + " . Json = " + json + ". e = " + e.toString());
+				CancelDial();
     			answer = "error";
     	        if (ua != null)
     	        {
@@ -137,12 +139,12 @@ public class PostLoader extends Thread
 				} else
 				{
 					InputStream is = response.getEntity().getContent();
-					answerBytes = Convert.InputStreamToByteArr(is);//EntityUtils.toByteArray(ent);
+					answerBytes = Convert.inputStreamToByteArr(is);//EntityUtils.toByteArray(ent);
 					answer = "";
 				}
 			} catch (Exception e)
 			{
-				Util.LOG(e.getMessage());
+				Util.log(e.getMessage());
 				e.printStackTrace();
 			}
 

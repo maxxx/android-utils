@@ -50,7 +50,7 @@ public class IphoneDialog extends Dialog
 		//dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 		wmlp.gravity = Gravity.CENTER;
-		wmlp.width = Util.GetScreenWidth(context) - 100;
+		wmlp.width = Util.getScreenWidth(context) - 100;
 
 		super.show();
 
@@ -72,6 +72,6 @@ public class IphoneDialog extends Dialog
 				dismiss();
 			}
 		});
-		Util.SetOpacity(rl, 0.8f);
+		Util.setOpacity(rl, 0.8f);
 	}
 }

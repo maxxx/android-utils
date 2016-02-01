@@ -46,7 +46,7 @@ public class ImageLoader // extends AsyncTask<Object, Void, Bitmap>
 		
 		final boolean u = useThumb;
 		final boolean r = resize;
-		String fname = Convert.ToStr(img_addr.hashCode());
+		String fname = Convert.toStr(img_addr.hashCode());
 		if (u)
 			fname = "thumb_" + fname;
 		b = LoadCachedImage(fname, path);
@@ -55,7 +55,7 @@ public class ImageLoader // extends AsyncTask<Object, Void, Bitmap>
 		{
 			imv.setImageBitmap(b);
 			imv.setTag(1);
-		} else // � ���� ����
+		} else //
 		{
 			Object[] obj = new Object[] {imv, img_addr, path, this, r, u, width, height};
 	        new AsyncLoader().execute(obj);
@@ -184,8 +184,8 @@ public class ImageLoader // extends AsyncTask<Object, Void, Bitmap>
 	    File f = new File(root + path + "/", fileName);
 	    if (!f.exists())
 	    {
-	    	Util.LOG("LoadCachedImage: file not found - " + f.getAbsolutePath());
-	    	return bmp;
+			Util.log("LoadCachedImage: file not found - " + f.getAbsolutePath());
+			return bmp;
 	    }
 	    String fullPath = f.getAbsolutePath();
 	    

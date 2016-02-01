@@ -21,7 +21,7 @@ public class ExampleWebVIew
 //		public boolean shouldOverrideUrlLoading(WebView view, String url)
 //		{
 //			view.loadUrl(url);
-//			//Util.LOG("webview - url - " + url);
+//			//Util.log("webview - url - " + url);
 //			return true;
 //		}
 //
@@ -29,8 +29,8 @@ public class ExampleWebVIew
 //		public void onPageFinished(WebView view, String url)
 //		{
 //			super.onPageFinished(view, url);
-//			//Util.LOG("rl: " + url);
-//                    /*if (Util.GetApiLvl() >= 16true)
+//			//Util.log("rl: " + url);
+//                    /*if (Util.getApiLvl() >= 16true)
 //                    {
 //                        view.loadUrl("javascript:HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 //                    } else

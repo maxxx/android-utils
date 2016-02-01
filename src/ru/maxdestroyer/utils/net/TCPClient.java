@@ -36,8 +36,8 @@ public abstract class TCPClient extends Thread
         sock.setTcpNoDelay(true);
         if (!sock.isConnected())
         {
-        	Util.LOG("TCPClient: timeout");
-        	status = 0;
+			Util.log("TCPClient: timeout");
+			status = 0;
         	OnError("TCPClient: timeout");
         	return false;
         }
@@ -59,7 +59,7 @@ public abstract class TCPClient extends Thread
 			}
 		} catch (Exception e)
 		{
-			Util.LOG("TCPClient:Connect error " + e.toString());
+			Util.log("TCPClient:Connect error " + e.toString());
 			status = 0;
         	OnError(e.toString());
 			e.printStackTrace();
@@ -83,13 +83,13 @@ public abstract class TCPClient extends Thread
 				out.flush();
 			} catch (IOException e)
 			{
-				Util.LOG("TCPClient:send " + e.toString());
+				Util.log("TCPClient:send " + e.toString());
 				e.printStackTrace();
 				OnError(e.toString());
 			}
 		}
 		else
-			Util.LOG("TCPClient:send when out = null!");
+			Util.log("TCPClient:send when out = null!");
 	}
 	
 	public void AppendMessage(byte[] message)
@@ -101,12 +101,12 @@ public abstract class TCPClient extends Thread
 				out.write(message);
 			} catch (IOException e)
 			{
-				Util.LOG("TCPClient:AppendMessage " + e.toString());
+				Util.log("TCPClient:AppendMessage " + e.toString());
 				e.printStackTrace();
 			}
 		}
 		else
-			Util.LOG("TCPClient:AppendMessage when out = null!");
+			Util.log("TCPClient:AppendMessage when out = null!");
 	}
 	
 	public void Flush()
@@ -118,12 +118,12 @@ public abstract class TCPClient extends Thread
 				out.flush();
 			} catch (IOException e)
 			{
-				Util.LOG("TCPClient:Flush " + e.toString());
+				Util.log("TCPClient:Flush " + e.toString());
 				e.printStackTrace();
 			}
 		}
 		else
-			Util.LOG("TCPClient:Flush when out = null!");
+			Util.log("TCPClient:Flush when out = null!");
 	}
 
 	public void Close()

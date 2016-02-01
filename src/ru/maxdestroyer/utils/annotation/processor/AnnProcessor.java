@@ -63,7 +63,7 @@ public class AnnProcessor {
                         }
                     } else {
                         //throw new RuntimeException("AnnProcessor:fillView: view not found! " + f.getName());
-                        Util.LOGV("AnnProcessor:fillView: view not found! " + f.getName());
+                        Util.logv("AnnProcessor:fillView: view not found! " + f.getName());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -94,7 +94,7 @@ public class AnnProcessor {
                         }
                     } else {
                         //throw new RuntimeException("AnnProcessor:parseView: view not found! " + f.getName());
-                        Util.LOGV("AnnProcessor:parseView: view not found! " + f.getName());
+                        Util.logv("AnnProcessor:parseView: view not found! " + f.getName());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

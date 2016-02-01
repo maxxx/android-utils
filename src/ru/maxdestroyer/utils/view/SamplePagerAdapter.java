@@ -36,7 +36,7 @@ public class SamplePagerAdapter extends PagerAdapter
 		// already added
 		if (v.getParent() != null)
 		{
-			//Util.LOG("SPA:instantiateItem: parent = " + v.getParent().getClass().toString());
+			//Util.log("SPA:instantiateItem: parent = " + v.getParent().getClass().toString());
 			android.support.v4.view.ViewPager vp = (ViewPager) v.getParent();
 			vp.removeView(v);
 			//return v;

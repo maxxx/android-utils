@@ -101,7 +101,7 @@ public class UtilConfig
 		else if (object instanceof Boolean)
 			Save(name, (boolean)(Boolean)object);
 		else if (object != null && object.getClass() != null)
-			Util.LOG("CFG::Save with unk object " + object.getClass().getCanonicalName());
+			Util.log("CFG::Save with unk object " + object.getClass().getCanonicalName());
 	}
 	
 	private Object LoadObj(String name)
@@ -184,7 +184,7 @@ public class UtilConfig
 	{
 		commit = false;
 
-		Object[] array = Convert.ListToArrObj(arr);
+		Object[] array = Convert.listToArrObj(arr);
 		for (int i = 0; i < array.length; ++i)
 			SaveObj(name + i, array[i]);
 
@@ -209,7 +209,7 @@ public class UtilConfig
 //			writer.close();
 //		} catch (IOException e)
 //		{
-//			Util.LOG(e.toString());
+//			Util.log(e.toString());
 //			e.printStackTrace();
 //		}
 //	}

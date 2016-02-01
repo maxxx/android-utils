@@ -49,7 +49,7 @@
 //		handler = new Handler();
 //	}
 //
-//	protected void MSG(Object text)
+//	protected void msg(Object text)
 //	{
 //		if (msg_queued)
 //		{
@@ -97,9 +97,9 @@
 //			toast.cancel();
 //	}
 //
-//	protected void LOG(Object text)
+//	protected void log(Object text)
 //	{
-//		Util.LOG(text);
+//		Util.log(text);
 //	}
 //
 //	@Override
@@ -161,9 +161,9 @@
 //		return getString(res);
 //	}
 //
-//	protected boolean IsLand()
+//	protected boolean isLand()
 //	{
-//		return Util.IsLand(_this);
+//		return Util.isLand(_this);
 //	}
 //
 //	protected void Hide(int res)
@@ -270,9 +270,9 @@
 //		_this.runOnUiThread(r);
 //	}
 //
-//	public void Back()
+//	public void back()
 //	{
-//		Util.Back(this);
+//		Util.back(this);
 //	}
 //
 //	protected void startActivity(Class<?> ac)

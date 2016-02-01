@@ -30,8 +30,8 @@ public class GPSData
 		lat = loc.getLatitude();
 		lon = loc.getLongitude();
 		height = loc.getAltitude();
-		speed = Convert.ToInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
-		direction = Convert.ToInt(loc.getBearing());
+		speed = Convert.toInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
+		direction = Convert.toInt(loc.getBearing());
 		acc = loc.getAccuracy();
 	}
 	
@@ -44,8 +44,8 @@ public class GPSData
 		lat = loc.getLatitude();
 		lon = loc.getLongitude();
 		height = loc.getAltitude();
-		speed = Convert.ToInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
-		direction = Convert.ToInt(loc.getBearing());
+		speed = Convert.toInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
+		direction = Convert.toInt(loc.getBearing());
 		acc = loc.getAccuracy();
 		satellites = sat;
 	}
@@ -59,12 +59,12 @@ public class GPSData
 		lat = loc.getLatitude();
 		lon = loc.getLongitude();
 		height = loc.getAltitude();
-		speed = Convert.ToInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
-		direction = Convert.ToInt(loc.getBearing());
+		speed = Convert.toInt(loc.getSpeed() * 1000.0f / 3600.0f); // km/h
+		direction = Convert.toInt(loc.getBearing());
 		acc = loc.getAccuracy();
 	}
-	
-	public void Save(UtilConfig cfg, int num)
+
+	public void save(UtilConfig cfg, int num)
 	{
 		cfg.Save("gpslat" + num, lat);
 		cfg.Save("gpslon" + num, lon);

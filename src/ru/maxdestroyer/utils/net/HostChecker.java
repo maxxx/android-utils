@@ -26,7 +26,7 @@ public class HostChecker extends Thread
 			connect = 1;
 		} catch (Exception e)
 		{
-			//Util.LOG(e.toString());
+			//Util.log(e.toString());
 			e.printStackTrace();
 			connect = 0;
 		}

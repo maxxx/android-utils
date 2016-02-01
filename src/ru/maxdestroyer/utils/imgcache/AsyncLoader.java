@@ -52,7 +52,7 @@ public class AsyncLoader extends AsyncTask<Object, Void, Bitmap>
 		
 		if (useThumb)
 		{
-			if (Util.GetApiLvl() >= 16)
+			if (Util.getApiLvl() >= 16)
 			{
 				h = imv.getMaxHeight();
 				w = imv.getMaxWidth();
@@ -103,7 +103,7 @@ public class AsyncLoader extends AsyncTask<Object, Void, Bitmap>
 		{
 			int h = 0;
 			int w = 0;
-			if (Util.GetApiLvl() >= 16)
+			if (Util.getApiLvl() >= 16)
 			{
 				h = b.getHeight() < imv.getMaxHeight() ? b.getHeight() : imv
 						.getMaxHeight();

@@ -107,8 +107,8 @@ public class Crypt
 			encryptedData = cipher.doFinal(in);
 		} catch (Exception e)
 		{
-			Util.LOG(e.toString());
-			e.printStackTrace();
+            Util.log(e.toString());
+            e.printStackTrace();
 		}
 		
 		return encryptedData;
@@ -133,8 +133,8 @@ public class Crypt
 			decryptedData = cipher.doFinal(in);
 		} catch (Exception e)
 		{
-			Util.LOG(e.toString());
-			e.printStackTrace();
+            Util.log(e.toString());
+            e.printStackTrace();
 		}
 		
 		return decryptedData;

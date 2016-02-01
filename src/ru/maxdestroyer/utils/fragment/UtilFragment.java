@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.Util;
 
@@ -59,7 +60,7 @@ public abstract class UtilFragment extends Fragment implements View.OnClickListe
 	public void onDetach()
 	{
 		super.onDetach();
-		Util.HideKeyboard(getActivity());
+		Util.hideKeyboard(getActivity());
 	}
 
 	protected <T> T f(int id)
@@ -134,6 +135,10 @@ public abstract class UtilFragment extends Fragment implements View.OnClickListe
 
 	protected void MSG(String msg)
 	{
-		Util.MSG(context, msg);
+		Util.msg(context, msg);
+	}
+
+	protected void selfRemove() {
+		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 	}
 }

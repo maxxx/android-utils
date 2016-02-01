@@ -47,7 +47,7 @@ public class ExampleLoader
 //					});
 //				} catch (JSONException e)
 //				{
-//					Util.LOG(e.toString());
+//					Util.log(e.toString());
 //					e.printStackTrace();
 //				}
 //			} else
@@ -55,7 +55,7 @@ public class ExampleLoader
 //				if (!ans.equals("error"))
 //				{
 //					String exp = "\"message\":\"(.*?)\"";
-//					MSG3(Util.RegExp(exp, ans).get(1));
+//					MSG3(Util.regExp(exp, ans).get(1));
 //				} else
 //					MSG3("Ошибка соединения с сервером");
 //			}

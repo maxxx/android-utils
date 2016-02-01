@@ -275,7 +275,7 @@ public abstract class DBWorker extends SQLiteOpenHelper implements BaseColumns
 				}
 				else if (c.isString(0))
 				{
-					tests.add(c.isNull(0) ? 0.0f : Convert.ToFloat(c.getString(0)));
+					tests.add(c.isNull(0) ? 0.0f : Convert.toFloat(c.getString(0)));
 				} else
 					tests.add(c.isNull(0) ? 0.0f : c.getInt(0));
 

@@ -283,7 +283,7 @@
 //			} catch (Exception e)
 //			{
 //				e.printStackTrace();
-//				Util.LOG("UnregGPS " + e.toString());
+//				Util.log("UnregGPS " + e.toString());
 //			}
 //		}
 //	}

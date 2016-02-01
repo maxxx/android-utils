@@ -28,12 +28,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.ButterKnife;
-import ru.maxdestroyer.utils.UtilConfig;
-import ru.maxdestroyer.utils.fragment.UtilFragment;
 
 import java.lang.reflect.Method;
 import java.util.List;
+
+import butterknife.ButterKnife;
+import ru.maxdestroyer.utils.UtilConfig;
+import ru.maxdestroyer.utils.fragment.UtilFragment;
 
 // ru.maxdestroyer.utils.activity.UtilActivity
 @SuppressWarnings("unused")
@@ -128,7 +129,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 	
 	protected void LOG(Object text)
 	{
-		ru.maxdestroyer.utils.Util.LOG(text);
+		ru.maxdestroyer.utils.Util.log(text);
 	}
 	
 	@Override
@@ -214,7 +215,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 	
 	protected boolean IsLand()
 	{
-		return ru.maxdestroyer.utils.Util.IsLand(_this);
+		return ru.maxdestroyer.utils.Util.isLand(_this);
 	}
 	
 	public void Hide(int res)

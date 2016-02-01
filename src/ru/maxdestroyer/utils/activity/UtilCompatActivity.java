@@ -125,7 +125,7 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     }
 
     protected void LOG(Object text) {
-        Util.LOG(text);
+        Util.log(text);
     }
 
     @Override
@@ -195,7 +195,7 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     }
 
     protected boolean IsLand() {
-        return Util.IsLand(_this);
+        return Util.isLand(_this);
     }
 
     protected void Hide(int res) {
@@ -286,7 +286,7 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     }
 
     public void Back() {
-        Util.Back(this);
+        Util.back(this);
     }
 
     protected void startActivity(Class<?> ac) {

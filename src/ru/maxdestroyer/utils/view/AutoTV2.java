@@ -281,7 +281,7 @@ public class AutoTV2 extends TextView
 		setTextSize(TypedValue.COMPLEX_UNIT_PX, targetTextSize);
 		setLineSpacing(mSpacingAdd, mSpacingMult);
 
-		// Notify the listener if registered
+		// notify the listener if registered
 		if(mTextResizeListener != null) {
 			mTextResizeListener.onTextResize(this, oldTextSize, targetTextSize);
 		}

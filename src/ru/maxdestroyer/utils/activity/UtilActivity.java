@@ -26,11 +26,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.reflect.Method;
+
 import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.Util;
 import ru.maxdestroyer.utils.UtilConfig;
-
-import java.lang.reflect.Method;
 
 // ru.maxdestroyer.utils.activity.UtilActivity
 @SuppressWarnings("unused")
@@ -121,7 +122,7 @@ public abstract class UtilActivity extends Activity implements OnClickListener
 	
 	protected void LOG(Object text)
 	{
-		Util.LOG(text);
+		Util.log(text);
 	}
 	
 	@Override
@@ -185,7 +186,7 @@ public abstract class UtilActivity extends Activity implements OnClickListener
 	
 	protected boolean IsLand()
 	{
-		return Util.IsLand(_this);
+		return Util.isLand(_this);
 	}
 	
 	protected void Hide(int res)
@@ -294,7 +295,7 @@ public abstract class UtilActivity extends Activity implements OnClickListener
 
 	public void Back()
 	{
-		Util.Back(this);
+		Util.back(this);
 	}
 
 	protected void startActivity(Class<?> ac)

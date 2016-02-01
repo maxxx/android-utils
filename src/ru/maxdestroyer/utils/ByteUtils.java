@@ -56,7 +56,7 @@ public class ByteUtils
 		int iRetVal = -1;
 
 		// TODO: revisit this: should we silently add missing byte and should
-		// we ingnore excessing bytes?
+		// we igmore excessing bytes?
 		if (paRawBytes.length < piOffset + 2)
 			return -1;
 

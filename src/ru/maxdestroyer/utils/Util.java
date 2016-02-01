@@ -10,8 +10,13 @@
 package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
-import android.app.*;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,33 +24,40 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.content.res.Resources.Theme;
-import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StatFs;
 import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.*;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
-import ru.maxdestroyer.utils.net.HostChecker;
-import ru.maxdestroyer.utils.visual.WakeLocker;
+import android.widget.GridView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,17 +67,21 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.maxdestroyer.utils.net.HostChecker;
+import ru.maxdestroyer.utils.visual.WakeLocker;
+
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")
 public abstract class Util
 {
-	public static void MSG(Context c, Object text)
-	{
+    public static void msg(Context c, Object text) {
 		Toast.makeText(c, String.valueOf(text), Toast.LENGTH_SHORT).show();
 	}
-	
-	public static void MSGT(Context c, Object text, int seconds)
-	{
+
+    /**
+     * @param text - will be parsed as string
+     */
+    public static void msgt(Context c, Object text, int seconds) {
 		final Toast tag = Toast.makeText(c, String.valueOf(text), Toast.LENGTH_SHORT);
 
 		tag.show();
@@ -83,9 +99,8 @@ public abstract class Util
 	 * from main thread
 	 * @param c
 	 * @param text
-	 */
-	public static void MSGM(final Activity c, final Object text)
-	{
+     */
+    public static void msgm(final Activity c, final Object text) {
 		c.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -93,54 +108,33 @@ public abstract class Util
                 Toast.makeText(c, String.valueOf(text), Toast.LENGTH_SHORT).show();
             }
         });
-	}
+    }
 
-	public static void GoURL(Context c, String url)
-	{
+    public static void goURL(Context c, String url) {
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		c.startActivity(browserIntent);
 	}
 
 	// <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	// udid
-	public static String GetDeviceId(Context c)
-	{
+    public static String getDeviceId(Context c) {
 		TelephonyManager tManager = (TelephonyManager) c
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		String devId = tManager.getDeviceId();
 		if (devId == null || devId.equals("000000000000000")) // эмулятор. Тогда Android Id
 			devId = Secure.getString(c.getContentResolver(), Secure.ANDROID_ID);
 		return devId;
-	}
+    }
 
-	public static String GetSimId(Context c)
-	{
+    public static String getSimId(Context c) {
 		TelephonyManager tManager = (TelephonyManager) c
 		  .getSystemService(Context.TELEPHONY_SERVICE);
 		String devId = tManager.getSimSerialNumber() != null ? tManager.getSimSerialNumber() : "";
 		return devId;
 	}
 
-	public static long GetFreeSpace(String path)
-	{
-		StatFs stat = new StatFs(path);
-		long sdAvailSize;
-		if (GetApiLvl() >= 18)
-		{
-			sdAvailSize = stat.getAvailableBlocksLong()
-			  * stat.getBlockSizeLong();
-		} else if (GetApiLvl() >= 9)
-			sdAvailSize = new File(path).getUsableSpace();
-		else
-			sdAvailSize = stat.getAvailableBlocks()
-		  * stat.getBlockSize();
-
-		return sdAvailSize;
-	}
-
 	// TODO: skype... ?
-	public static boolean CanCall(Context c)
-	{
+    public static boolean canCall(Context c) {
 		TelephonyManager telMgr = (TelephonyManager) c.getSystemService(Context.TELEPHONY_SERVICE);
 		// не факт что сработает
 		if (telMgr.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE)
@@ -154,26 +148,23 @@ public abstract class Util
 				return true;
 			default:
 				return false;
-		}
-	}
+        }
+    }
 
-	public static String GetOSVersion()
-	{
+    public static String getOSVersion() {
 		return "Android " + Build.VERSION.RELEASE;
 	}
 	
 	public static boolean IsDvoika()
 	{
 		return Build.VERSION.SDK_INT < 11;
-	}
-	
-	public static int GetApiLvl()
-	{
-		return Build.VERSION.SDK_INT;
-	}
+    }
 
-	public static String GetDeviceName()
-	{
+    public static int getApiLvl() {
+		return Build.VERSION.SDK_INT;
+    }
+
+    public static String getDeviceName() {
 		String manufacturer = Build.MANUFACTURER;
 		String model = Build.MODEL;
 		if (model.startsWith(manufacturer))
@@ -194,9 +185,8 @@ public abstract class Util
 	}
 
 	// <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
-	// />
-	public static boolean HasInternet(Context ctx)
-	{
+    // />
+    public static boolean hasInternet(Context ctx) {
 		ConnectivityManager cm = (ConnectivityManager) ctx
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -205,28 +195,16 @@ public abstract class Util
 
 		return cm.getActiveNetworkInfo() != null
 				&& cm.getActiveNetworkInfo().isConnectedOrConnecting();
-	}
-	
-	public static boolean HasWiFi(Context c)
-	{
+    }
+
+    public static boolean hasWiFi(Context c) {
 		ConnectivityManager connManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 		return mWifi.isConnected();
-	}
+    }
 
-	public static void DeleteRecursive(String path)
-	{
-		File f = new File(path);
-		if (f.isDirectory())
-			for (File child : f.listFiles())
-				DeleteRecursive(child.getAbsolutePath());
-
-		f.delete();
-	}
-
-	public static int GetScreenWidth(Activity c)
-	{
+    public static int getScreenWidth(Activity c) {
 		Display display = c.getWindowManager().getDefaultDisplay();
 		final DisplayMetrics metrics = new DisplayMetrics(); 
 		// only 14 15 16
@@ -236,10 +214,9 @@ public abstract class Util
 			{
 				Method mGetRawW = Display.class.getMethod("getRawWidth");
 				return (Integer) mGetRawW.invoke(display);
-			} catch (Exception e)
-			{
-				Log.e("GetScreenWidth", "error!");
-				e.printStackTrace();
+			} catch (Exception e) {
+                Log.e("getScreenWidth", "error!");
+                e.printStackTrace();
 			}
 		} 
 		else if (Build.VERSION.SDK_INT >= 17) // 4.2.2+
@@ -255,10 +232,9 @@ public abstract class Util
 		}
 
 		return 0;
-	}
+    }
 
-	public static int GetScreenHeight(Activity c)
-	{
+    public static int getScreenHeight(Activity c) {
 		Display display = c.getWindowManager().getDefaultDisplay();
 		final DisplayMetrics metrics = new DisplayMetrics(); 
 		// only 14 15 16
@@ -271,10 +247,9 @@ public abstract class Util
 				// metrics
 				Method mGetRawW = Display.class.getMethod("getRawHeight");
 				return (Integer) mGetRawW.invoke(display);
-			} catch (Exception e)
-			{
-				Log.e("GetScreenHeight", "error!");
-				e.printStackTrace();
+			} catch (Exception e) {
+                Log.e("getScreenHeight", "error!");
+                e.printStackTrace();
 			}
 		}
 		else if (Build.VERSION.SDK_INT >= 17) // 4.2.2+
@@ -290,23 +265,9 @@ public abstract class Util
 		}
 
 		return 0;
-	}
+    }
 
-	public static int DpToPix(Context c, float dips)
-	{
-		return (int) (dips * c.getResources().getDisplayMetrics().density + 0.5f);
-	}
-	
-	public static float PixToDp(Context c, float px)
-	{
-		Resources resources = c.getResources();
-		DisplayMetrics metrics = resources.getDisplayMetrics();
-		float dp = px / (metrics.densityDpi / 160f);
-		return dp;
-	}
-
-	public static boolean CheckHost(String url)
-	{
+    public static boolean checkHost(String url) {
 		HostChecker h = new HostChecker(url);
 		h.start();
 		while (h.connect == -1)
@@ -321,22 +282,19 @@ public abstract class Util
 		}
 
 		return h.connect == 1;
-	}
+    }
 
-	public static void LOG(Object txt)
-	{
-		Log.e("Util.LOG", txt + "");
-	}
+    public static void log(Object txt) {
+        Log.e("Util.log", txt + "");
+    }
 
-	public static void LOGV(Object txt)
-	{
-		Log.v("Util.LOG", txt + "");
-	}
+    public static void logv(Object txt) {
+        Log.v("Util.log", txt + "");
+    }
 
 	@SuppressLint({ "NewApi", "ServiceCast" })
 	@SuppressWarnings("deprecation")
-	public static void CopyToClipboard(Context c, String text)
-	{
+    public static void toClipboard(Context c, String text) {
 		if (android.os.Build.VERSION.SDK_INT < 11)
 		{
 			android.text.ClipboardManager clipboard = (android.text.ClipboardManager) c
@@ -354,8 +312,7 @@ public abstract class Util
 	}
 
 	@SuppressWarnings("deprecation")
-	public static String GetClipboard(Context c)
-	{
+    public static String getClipboard(Context c) {
 		if (android.os.Build.VERSION.SDK_INT < 11)
 		{
 			android.text.ClipboardManager clipboard = (android.text.ClipboardManager) c
@@ -370,66 +327,9 @@ public abstract class Util
 		}
 	}
 
-	public static void MakeScreenshot(Activity c, String path, View view)
-	{
-		// Get device dimmensions
-		int h = GetScreenHeight(c);
-		int w = GetScreenWidth(c);
-		// Display display = c.getWindowManager().getDefaultDisplay();
-		// Point size = new Point();
-		// display.getSize(size);
-
-		// Get root view
-		// View view = ???.getRootView();
-
-		// Create the bitmap to use to draw the screenshot
-		final Bitmap bitmap = Bitmap
-				.createBitmap(w, h, Bitmap.Config.RGB_565);
-		final Canvas canvas = new Canvas(bitmap);
-
-		// Get current theme to know which background to use
-		final Activity activity = c;
-		final Theme theme = activity.getTheme();
-		final TypedArray ta = theme
-				.obtainStyledAttributes(new int[] { android.R.attr.windowBackground });
-		final int res = ta.getResourceId(0, 0);
-		final Drawable background = activity.getResources().getDrawable(res);
-
-		// Draw background
-		background.draw(canvas);
-
-		// Draw views
-        view.setDrawingCacheEnabled(true);
-		view.draw(canvas);
-        view.setDrawingCacheEnabled(false);
-
-		// Save the screenshot to the file system
-		FileOutputStream fos = null;
-		final File sddir = new File(path);
-		if (!sddir.exists())
-			sddir.mkdirs();
-		File f = new File(path, System.currentTimeMillis() + ".jpg");
-		try
-		{
-			fos = new FileOutputStream(f);
-			if (fos != null)
-			{
-				if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos))
-					LOG("Compress/Write failed");
-				fos.flush();
-				fos.close();
-			}
-		} catch (Exception e)
-		{
-			LOG("MakeScreenshot: " + e.toString());
-			e.printStackTrace();
-		}
-	}
-
-	@SuppressWarnings({ "deprecation", "rawtypes" })
-	public static void Notify(final Context con, String title, String text,
-			Class activityToRun, Bundle extras, boolean vib)
-	{
+	@SuppressWarnings({ "deprecation", "rawtypes"})
+    public static void notify(final Context con, String title, String text,
+                              Class activityToRun, Bundle extras, boolean vib) {
 		NotificationManager notificationManager = (NotificationManager) con
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		WakeLocker.acquire(con);
@@ -472,10 +372,9 @@ public abstract class Util
 			}, 5000);
 	}
 	
-	@SuppressWarnings({ "deprecation", "rawtypes" })
-	public static void Notify(final Context con, String title, String text,
-			Class activityToRun, Bundle extras, boolean vib, int id)
-	{
+	@SuppressWarnings({ "deprecation", "rawtypes"})
+    public static void notify(final Context con, String title, String text,
+                              Class activityToRun, Bundle extras, boolean vib, int id) {
 		NotificationManager notificationManager = (NotificationManager) con
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		WakeLocker.acquire(con);
@@ -516,10 +415,9 @@ public abstract class Util
 					WakeLocker.release();
 				}
 			}, 5000);
-	}
-	
-	public static boolean IsTablet(Context activityContext)
-	{
+    }
+
+    public static boolean isTablet(Context activityContext) {
 		// Verifies if the Generalized Size of the device is LARGE to be
 		// considered a Tablet
 		boolean large = ((activityContext.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE);
@@ -548,54 +446,9 @@ public abstract class Util
 			}
 		}
 		return false;
-	}
-	
-	public static boolean IsHTC(Context activityContext)
-	{
-		// Verifies if the Generalized Size of the device is LARGE to be
-		// considered a Tablet
-		boolean large = ((activityContext.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE);
+    }
 
-		//Configuration.SCREENLAYOUT_SIZE_NORMAL = 2
-		// If Large, checks if the Generalized Density is at least MDPI
-		// (160dpi)
-		if (large)
-		{
-			DisplayMetrics metrics = new DisplayMetrics();
-			Activity activity = (Activity) activityContext;
-			activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-			// htc one
-			if (metrics.widthPixels == 1080 || metrics.heightPixels == 1080)
-				return true;
-		}
-		return false;
-	}
-	
-	public static boolean IsGTP1000(Context activityContext)
-	{
-		// Verifies if the Generalized Size of the device is LARGE to be
-		// considered a Tablet
-		boolean large = ((activityContext.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE);
-
-		//Configuration.SCREENLAYOUT_SIZE_NORMAL = 2
-		// If Large, checks if the Generalized Density is at least MDPI
-		// (160dpi)
-		if (large)
-		{
-			DisplayMetrics metrics = new DisplayMetrics();
-			Activity activity = (Activity) activityContext;
-			activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-			// samsung Galaxy Tab P1000
-			if (metrics.densityDpi == 240 && Util.IsDvoika() && Build.MODEL.contains("GT-P1000"))
-				return true;
-		}
-		return false;
-	}
-	
-	public static int GetDensity(Context c)
-	{
+    public static int getDensity(Context c) {
 		DisplayMetrics metrics = new DisplayMetrics();
 		Activity activity = (Activity) c;
 		activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -603,23 +456,24 @@ public abstract class Util
 		// MDPI=160, DEFAULT=160, DENSITY_HIGH=240, DENSITY_MEDIUM=160,
 		// DENSITY_TV=213, DENSITY_XHIGH=320
 		return metrics.densityDpi;
-	}
-	
-	public static double GetScreenSize(Activity activity)
-	{
+    }
+
+    public static double getScreenSize(Activity activity) {
 		Display display = activity.getWindowManager().getDefaultDisplay();
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		display.getMetrics(displayMetrics);
 
-		double width = ((double)GetScreenWidth(activity) / (double)displayMetrics.densityDpi);
-		double height = ((double)GetScreenHeight(activity) / (double)displayMetrics.densityDpi);
+        double width = ((double) getScreenWidth(activity) / (double) displayMetrics.densityDpi);
+        double height = ((double) getScreenHeight(activity) / (double) displayMetrics.densityDpi);
 
 		double screenDiagonal = Math.sqrt(width * width + height * height);
 		return screenDiagonal;
-	}
+    }
 
-	public static String GetCurDate()
-	{
+    /**
+     * @return dd.MM.yyyy
+     */
+    public static String getCurDate() {
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	    Calendar cal = Calendar.getInstance();
 
@@ -630,8 +484,7 @@ public abstract class Util
      * visible/gone
      * @param v
      */
-	public static void ToggleVisibility(View v)
-	{
+    public static void toggleVisibility(View v) {
 		if (v.getVisibility() == View.VISIBLE)
 			v.setVisibility(View.GONE);
 		else
@@ -642,21 +495,18 @@ public abstract class Util
      * visible/invisible
      * @param v
      */
-	public static void ToggleVisibility2(View v)
-	{
+    public static void toggleVisibility2(View v) {
 		if (v.getVisibility() == View.VISIBLE)
 			v.setVisibility(View.INVISIBLE);
 		else
 			v.setVisibility(View.VISIBLE);
 	}
-	
-	public static boolean IsLand(Context c)
-	{
+
+    public static boolean isLand(Context c) {
 		return c.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT;
 	}
-	
-	public static void ExpandList(ListView listView, boolean noAdapter)
-	{
+
+    public static void expandList(ListView listView, boolean noAdapter) {
 		if (noAdapter)
 		{
 			int totalHeight = 0;
@@ -694,9 +544,8 @@ public abstract class Util
 				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
 	}
-	
-	public static void ExpandList(ListView listView, int maxHeight)
-	{
+
+    public static void expandList(ListView listView, int maxHeight) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null)
 			return;
@@ -724,8 +573,7 @@ public abstract class Util
 	}
 
 	// когда список внутри списка, высота почему-то считается криво
-	public static void ExpandListPlus(ListView listView, int maxHeight, int addHeight)
-	{
+    public static void expandListPlus(ListView listView, int maxHeight, int addHeight) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null)
 			return;
@@ -751,8 +599,7 @@ public abstract class Util
 	}
 
 	// для многострочных текствью
-	public static void ExpandList(ListView listView, int maxHeight, int listWidth)
-	{
+    public static void expandList(ListView listView, int maxHeight, int listWidth) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null)
 			return;
@@ -776,9 +623,8 @@ public abstract class Util
 		listView.setLayoutParams(params);
 		//listView.requestLayout();  заставляет скрулить родителя
 	}
-	
-	public static void ExpandListItem(ListView lv, int visibleItems)
-	{
+
+    public static void expandListItem(ListView lv, int visibleItems) {
 		lv.getLayoutParams().height = 0;
 		for (int i = 0; i < visibleItems; i++)
 		{
@@ -792,9 +638,8 @@ public abstract class Util
 //				RelativeLayout.LayoutParams.MATCH_PARENT,
 //				RelativeLayout.LayoutParams.WRAP_CONTENT));
 	}
-	
-	public static void ExpandGridItem(GridView lv, int rows, int height)
-	{
+
+    public static void expandGridItem(GridView lv, int rows, int height) {
 		lv.getLayoutParams().height = 0;
 		if ((lv).getAdapter().getCount() > 0)
 		{
@@ -806,15 +651,14 @@ public abstract class Util
 			int h = height > 0 ? height : item.getMeasuredHeight();
 
 			lv.getLayoutParams().height = h * rows;
-			int pad = Util.DpToPix(lv.getContext(), 10);
-			if (GetApiLvl() >= 16)
-				pad = lv.getVerticalSpacing();
+            int pad = ImageUtils.dpToPix(lv.getContext(), 10);
+            if (getApiLvl() >= 16)
+                pad = lv.getVerticalSpacing();
 			lv.getLayoutParams().height += pad * (rows-1);
 		}
 	}
 
-	public static String GetPhoneNumber(Context c)
-	{
+    public static String getPhoneNumber(Context c) {
         TelephonyManager mTelephonyMgr = (TelephonyManager) c
                 .getSystemService(Context.TELEPHONY_SERVICE);
         return mTelephonyMgr.getLine1Number();
@@ -827,8 +671,7 @@ public abstract class Util
      * @param ctx
      * @return
      */
-	public static boolean IsTaskRunning(Context ctx)
-	{
+    public static boolean isTaskRunning(Context ctx) {
 		ActivityManager activityManager = (ActivityManager) ctx
 				.getSystemService(Context.ACTIVITY_SERVICE);
 		List<RunningTaskInfo> tasks = activityManager
@@ -844,8 +687,7 @@ public abstract class Util
 	}
 	
 	// первый захват (...) - .get(1)
-	public static ArrayList<String> RegExp(String _pattern, String source)
-	{
+    public static ArrayList<String> regExp(String _pattern, String source) {
 		ArrayList<String> res = new ArrayList<String>();
 		Pattern pattern = Pattern.compile(_pattern);
 		Matcher matcher = pattern.matcher(source);
@@ -861,9 +703,8 @@ public abstract class Util
 		}
 		return res;
 	}
-	
-	public static boolean RegExpMatch(String _pattern, String source)
-	{
+
+    public static boolean regExpMatch(String _pattern, String source) {
 		ArrayList<String> res = new ArrayList<String>();
 		Pattern pattern = Pattern.compile(_pattern);
 		Matcher matcher = pattern.matcher(source);
@@ -875,10 +716,6 @@ public abstract class Util
 		return (int) (System.currentTimeMillis() / 1000L & 0x00000000FFFFFFFFL);
 	}
 
-	public static int TimeToInt(long time)
-	{
-		return (int) (time / 1000L & 0x00000000FFFFFFFFL);
-	}
 	
 	// в метрах
 	// GeoPoint - зависимость от яндекс картс!!
@@ -906,15 +743,13 @@ public abstract class Util
 
 		return (int)(miles * meterConversion);
 	}
-	
-	public static boolean IsEmulator()
-	{
+
+    public static boolean isEmulator() {
 		return Build.FINGERPRINT.contains("generic");
 	}
 	
 	// 0(прозрач) .. 1(норм)
-	public static void SetOpacity(View v, float opacity)
-	{
+    public static void setOpacity(View v, float opacity) {
 		AlphaAnimation alpha = new AlphaAnimation(opacity, opacity);
 		alpha.setDuration(0);
 		alpha.setFillAfter(true);
@@ -1025,22 +860,20 @@ public abstract class Util
 		// Scale our contents
 		scaleViewAndChildren(rootView, scale);
 	}
-	
-	public static void SetVisibility(View root, boolean vis)
-	{
+
+    public static void setVisibility(View root, boolean vis) {
 		root.setVisibility(vis ? View.VISIBLE : View.GONE);
 
 		if (root instanceof ViewGroup)
 		{
 			ViewGroup groupView = (ViewGroup) root;
 			for (int cnt = 0; cnt < groupView.getChildCount(); ++cnt)
-				SetVisibility(groupView.getChildAt(cnt), vis);
-		}
+                setVisibility(groupView.getChildAt(cnt), vis);
+        }
 	}
 	
 	// <uses-permission android:name="android.permission.CALL_PHONE"/>
-	public static void Call(String number, Context ctx)
-	{
+    public static void call(String number, Context ctx) {
 		try
 		{
 			Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -1048,18 +881,16 @@ public abstract class Util
 			ctx.startActivity(callIntent);
 		} catch (ActivityNotFoundException e)
 		{
-			Util.LOG("Util::Call failed, ActivityNotFoundException " + e.toString());
-		}
+            Util.log("Util::call failed, ActivityNotFoundException " + e.toString());
+        }
 	}
-	
-	public static long GetFreeExternalMemory()
-	{
+
+    public static long getFreeExternalMemory() {
 		File path = Environment.getDataDirectory();
 		StatFs stat = new StatFs(path.getPath());
         long blockSize;
         long availableBlocks;
-        if (GetApiLvl() >= 18)
-        {
+        if (getApiLvl() >= 18) {
             blockSize = stat.getBlockSizeLong();
             availableBlocks = stat.getAvailableBlocksLong();
         } else {
@@ -1069,17 +900,15 @@ public abstract class Util
 
 		return availableBlocks * blockSize;
 	}
-	
-	public static void HideKeyboard(Activity context)
-	{
+
+    public static void hideKeyboard(Activity context) {
 		if (context.getCurrentFocus() == null)
 			return;
 		InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
 	}
 
-	public static void ShowKeyboard(final View v, final Activity context)
-	{
+    public static void showKeyboard(final View v, final Activity context) {
 		v.postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -1089,8 +918,10 @@ public abstract class Util
 		}, 50);
 	}
 
-	public static void BuildRoute(final Context context, double latFrom, double lonFrom, double lat, double lon)
-	{
+    /**
+     * calls external app (yandexnavi)
+     */
+    public static void buildRoute(final Context context, double latFrom, double lonFrom, double lat, double lon) {
 		Intent			intent;
 		PackageManager	packageManager;
 		List<ResolveInfo>	infos;
@@ -1153,8 +984,7 @@ public abstract class Util
 	}
 	
 	// прокрутка вью если она в прокручивающемся родителе. Например список в списке
-	public static void ScrollHack(View vv)
-	{
+    public static void scrollHack(View vv) {
 //        vv.setOnTouchListener(new ListView.OnTouchListener()
 //		{
 //			@Override
@@ -1217,8 +1047,7 @@ public abstract class Util
 		}
 	}
 
-	public static int CountChars(String haystack, char needle)
-	{
+    public static int countChars(String haystack, char needle) {
 		int count = 0;
 		for (char c : haystack.toCharArray())
 		{
@@ -1230,8 +1059,7 @@ public abstract class Util
 		return count;
 	}
 
-	public static void Back(Activity mActivity)
-	{
+    public static void back(Activity mActivity) {
 		KeyEvent backEvtDown = new KeyEvent(KeyEvent.ACTION_DOWN,
 		  KeyEvent.KEYCODE_BACK);
 		KeyEvent backEvtUp = new KeyEvent(KeyEvent.ACTION_UP,
@@ -1240,14 +1068,14 @@ public abstract class Util
 		mActivity.dispatchKeyEvent(backEvtUp);
 	}
 
-	public static String TwoDig(int dig)
+    // ?
+    public static String TwoDig(int dig)
 	{
 		 return String.format("%02d", dig);
 	}
 
-	// GetNoun(6, 'яблоко', 'яблока', 'яблок') // Вернет «яблок»
-	public static String GetNoun(int dig, String one, String two, String five)
-	{
+    // getNoun(6, 'яблоко', 'яблока', 'яблок') // Вернет «яблок»
+    public static String getNoun(int dig, String one, String two, String five) {
 		dig = Math.abs(dig);
 		dig %= 100;
 		if (dig >= 5 && dig <= 20)
@@ -1266,8 +1094,7 @@ public abstract class Util
      * @param strings
      * @return index of found item or -1 if not found
      */
-	public static int FindIn(String source, String[] strings)
-	{
+    public static int findIn(String source, String[] strings) {
 		for (int i = 0; i < strings.length; i++)
 		{
 			if (source.equals(strings[i]))
@@ -1276,8 +1103,7 @@ public abstract class Util
 		return -1;
 	}
 
-	public static void Rotate(View v, float degree)
-	{
+    public static void rotateView(View v, float degree) {
 	//	if (Build.VERSION.SDK_INT < 11)
 	//	{
 			RotateAnimation animation = new RotateAnimation(0, degree, 50.0f, 50.0f);
@@ -1290,13 +1116,11 @@ public abstract class Util
 //		}
 	}
 
-	public static int GetLongestSide(Activity context)
-	{
-		return Util.GetScreenWidth(context) > Util.GetScreenHeight(context) ? Util.GetScreenWidth(context) : Util.GetScreenHeight(context);
-	}
+    public static int getLongestSide(Activity context) {
+        return Util.getScreenWidth(context) > Util.getScreenHeight(context) ? Util.getScreenWidth(context) : Util.getScreenHeight(context);
+    }
 
-	public static String GenGUID()
-	{
+    public static String genGUID() {
 		return java.util.UUID.randomUUID().toString();
 	}
 
@@ -1304,8 +1128,7 @@ public abstract class Util
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
 
-    public static void ShuffleArray(int[] array)
-	{
+    public static void shuffleArray(int[] array) {
 		int index;
 		Random random = new Random();
 		for (int i = array.length - 1; i > 0; i--)

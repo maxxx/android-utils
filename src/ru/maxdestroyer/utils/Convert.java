@@ -38,56 +38,47 @@ import java.util.TimeZone;
 
 public abstract class Convert
 {
-	public static int ToInt(Object obj)
-	{
+    public static int toInt(Object obj) {
 		if (obj == null || obj.toString().equals(""))
 			return 0;
 
 		return Integer.parseInt(obj.toString());
 	}
 
-	public static int ToInt(float f)
-	{
+    public static int toInt(float f) {
 		return (int)(Math.round(f));
 	}
 
-	public static String ToStr(int digit)
-	{
+    public static String toStr(int digit) {
 		return Integer.toString(digit);
 	}
 
-	public static String ToStr(float digit)
-	{
+    public static String toStr(float digit) {
 		return Float.toString(digit);
 	}
 
-	public static String ToStr(double digit)
-	{
+    public static String toStr(double digit) {
 		return Double.toString(digit);
 	}
 
-	public static String ToStr(Object digit)
-	{
+    public static String toStr(Object digit) {
 		return digit.toString();
 	}
 
-	public static long ToLong(String s)
-	{
+    public static long toLong(String s) {
         if (TextUtils.isEmpty(s))
             return 0;
         return Long.parseLong(s);
 	}
 
-	public static double ToDouble(String s)
-	{
+    public static double toDouble(String s) {
         if (TextUtils.isEmpty(s))
             return 0.0;
 
 		return Double.parseDouble(s);
 	}
 
-	public static float ToFloat(String s)
-	{
+    public static float toFloat(String s) {
         if (TextUtils.isEmpty(s))
             return 0.0f;
 
@@ -95,16 +86,15 @@ public abstract class Convert
 	}
 
 	// generic
-	public static String[] ObjListToStrArr(ArrayList<String> arr)
-	{
+    public static String[] objListToStrArr(ArrayList<String> arr) {
 		String[] list = new String[arr.size()];
 		for (int i = 0; i < arr.size(); i++)
 			list[i] = arr.get(i).toString();
 		return list;
 	}
 
-    public static String ListToString(List<?> arr, boolean ws) {
-		if (arr.size() > 0)
+    public static String listToString(List<?> arr, boolean ws) {
+        if (arr.size() > 0)
 		{
 			StringBuilder nameBuilder = new StringBuilder();
 
@@ -123,12 +113,15 @@ public abstract class Convert
 			return "";
 	}
 
-	// sep = ","
-	public static ArrayList<String> StrToArr(String str, String sep)
-	{
+    /**
+     * @param str
+     * @param sep = "," by default
+     * @return
+     */
+    public static ArrayList<String> strToArr(String str, String sep) {
 		String[] arr = str.split(sep);
-		return ArrToList(arr);
-	}
+        return arrToList(arr);
+    }
 	
 	// json
 	public static ArrayList<Object> JSONArrToList(JSONArray arr)
@@ -195,10 +188,9 @@ public abstract class Convert
 		}
 
 		return ja;
-	}
+    }
 
-	public static <T> ArrayList<T> ArrToList(T[] arr)
-	{
+    public static <T> ArrayList<T> arrToList(T[] arr) {
 		return new ArrayList<T>(Arrays.asList(arr));
 	}
 
@@ -232,18 +224,16 @@ public abstract class Convert
 		}
 
 		return f;
-	}
+    }
 
-	public static File ImageViewToFile(ImageView iv, Context context)
-	{
+    public static File imageViewToFile(ImageView iv, Context context) {
 		Drawable dr = iv.getDrawable();
 		if (dr == null)
 			return null;
 		Bitmap bitmap = ((BitmapDrawable)dr).getBitmap();
 		// create a file to write bitmap data
-		final File f = new File(context.getCacheDir(), "temp"+System.currentTimeMillis()+".jpeg");
-		try
-		{
+        final File f = new File(context.getCacheDir(), "temp" + System.currentTimeMillis() + ".jpeg");
+        try {
 			f.createNewFile();
 		} catch (IOException e)
 		{
@@ -267,26 +257,23 @@ public abstract class Convert
 			e.printStackTrace();
 		}
 		return f;
-	}
+    }
 
-	public static <T> T[] ListToArr(ArrayList<T> arr)
-	{
+    public static <T> T[] listToArr(ArrayList<T> arr) {
 		final T t = arr.get(0);
 		final T[] res = (T[]) Array.newInstance(t.getClass(), arr.size());
 		for (int i = 0; i < arr.size(); i++) {
 			res[i] = arr.get(i);
 		}
 		return res;
-	}
+    }
 
-	public static Object[] ListToArrObj(ArrayList<?> arr)
-	{
+    public static Object[] listToArrObj(ArrayList<?> arr) {
 		Object[] array = arr.toArray(new Object[arr.size()]);
 		return array;
-	}
+    }
 
-	public static byte[] InputStreamToByteArr(InputStream is)
-	{
+    public static byte[] inputStreamToByteArr(InputStream is) {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
 		int nRead;
@@ -309,12 +296,12 @@ public abstract class Convert
     /**
      * DATE
      */
-    public static Date TimestampToDate(long ts) {
+    public static Date timestampToDate(long ts) {
         Date netDate = new Date(ts); // GMT 0
         return netDate;
     }
 
-    public static String TimestampToDate(long ts, String format) {
+    public static String timestampToDate(long ts, String format) {
         Calendar cldr = Calendar.getInstance();
         cldr.setTime(new Date(ts));
         SimpleDateFormat date = new SimpleDateFormat(format);
@@ -322,7 +309,7 @@ public abstract class Convert
         return date.format(cldr.getTime());
     }
 
-    public static java.util.Date StrToDate(String aDate, String aFormat) {
+    public static java.util.Date strToDate(String aDate, String aFormat) {
         ParsePosition pos = new ParsePosition(0);
         SimpleDateFormat simpledateformat = new SimpleDateFormat(aFormat);
         java.util.Date stringDate = new java.util.Date(simpledateformat.parse(aDate, pos).getTime());
@@ -333,25 +320,25 @@ public abstract class Convert
             throws ParseException {
         DateFormat datef = new SimpleDateFormat(dateformat);
         java.util.Date d = datef.parse(date);
-        long ts = DateToTimestamp(d);
-        String finalDate = TimestampToDate(ts, reqDateFormat);
+        long ts = dateToTimestamp(d);
+        String finalDate = timestampToDate(ts, reqDateFormat);
         return finalDate;
     }
 
-    public static long DateToTimestamp(Object year, Object month, Object day, Object hour, Object minute) {
+    public static long dateToTimestamp(Object year, Object month, Object day, Object hour, Object minute) {
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, Convert.ToInt(year));
-        c.set(Calendar.MONTH, Convert.ToInt(month));
-        c.set(Calendar.DAY_OF_MONTH, Convert.ToInt(day));
-        c.set(Calendar.HOUR_OF_DAY, Convert.ToInt(hour));
-        c.set(Calendar.MINUTE, Convert.ToInt(minute));
+        c.set(Calendar.YEAR, Convert.toInt(year));
+        c.set(Calendar.MONTH, Convert.toInt(month));
+        c.set(Calendar.DAY_OF_MONTH, Convert.toInt(day));
+        c.set(Calendar.HOUR_OF_DAY, Convert.toInt(hour));
+        c.set(Calendar.MINUTE, Convert.toInt(minute));
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
 
         return c.getTimeInMillis();
     }
 
-//	public static int DateToTimestamp(java.util.Date d)
+//	public static int dateToTimestamp(java.util.Date d)
 //	{
 //		Calendar c = Calendar.getInstance();
 //		c.setTime(d);
@@ -359,23 +346,28 @@ public abstract class Convert
 //		return (int) (c.getTimeInMillis() / 1000L);
 //	}
 
-    public static long DateToTimestamp(java.util.Date d) {
+    public static long dateToTimestamp(java.util.Date d) {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
 
         return (c.getTimeInMillis());
     }
 
-    public static long DateToTimestampLong(Object year, Object month, Object day, Object hour, Object minute) {
+    public static long dateToTimestampLong(Object year, Object month, Object day, Object hour, Object minute) {
         Calendar c = Calendar.getInstance(TimeZone.getDefault());
-        c.set(Calendar.YEAR, Convert.ToInt(year));
-        c.set(Calendar.MONTH, Convert.ToInt(month));
-        c.set(Calendar.DAY_OF_MONTH, Convert.ToInt(day));
-        c.set(Calendar.HOUR_OF_DAY, Convert.ToInt(hour));
-        c.set(Calendar.MINUTE, Convert.ToInt(minute));
+        c.set(Calendar.YEAR, Convert.toInt(year));
+        c.set(Calendar.MONTH, Convert.toInt(month));
+        c.set(Calendar.DAY_OF_MONTH, Convert.toInt(day));
+        c.set(Calendar.HOUR_OF_DAY, Convert.toInt(hour));
+        c.set(Calendar.MINUTE, Convert.toInt(minute));
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
 
-        return c.getTimeInMillis() / 1000;
+        return c.getTimeInMillis();
+    }
+
+
+    public static int timestampToInt(long time) {
+        return (int) (time / 1000L & 0x00000000FFFFFFFFL);
     }
 }

@@ -8,8 +8,8 @@
  */
 package ru.maxdestroyer.utils;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.annotation.SuppressLint;
+import android.os.StatFs;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -19,34 +19,30 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-public abstract class FileUtil
+public abstract class FileUtils
 {
-	public static void Write(byte[] data, String fileName) throws IOException
-	{
+    public static void write(byte[] data, String fileName) throws IOException {
 		FileOutputStream out = new FileOutputStream(fileName);
 		out.write(data);
 		out.flush();
 		out.close();
 	}
 
-	public static void Write(byte[] data, File file) throws IOException
-	{
+    public static void write(byte[] data, File file) throws IOException {
 		FileOutputStream out = new FileOutputStream(file);
 		out.write(data);
 		out.flush();
 		out.close();
 	}
 
-	public static void Append(byte[] data, File file) throws IOException
-	{
+    public static void append(byte[] data, File file) throws IOException {
 		FileOutputStream out = new FileOutputStream(file, true);
 		out.write(data);
 		out.flush();
 		out.close();
 	}
 
-	public static void Append(String str, File file) throws IOException
-	{
+    public static void append(String str, File file) throws IOException {
 		FileOutputStream out = new FileOutputStream(file, true);
 		OutputStreamWriter bos = new OutputStreamWriter(out);
 		bos.write(str);
@@ -54,8 +50,7 @@ public abstract class FileUtil
 		out.close();
 	}
 
-	public static byte[] Read(String fileName) throws IOException
-	{
+    public static byte[] read(String fileName) throws IOException {
 		File file = new File(fileName);
 		int size = (int) file.length();
 		byte[] bytes = new byte[size];
@@ -74,8 +69,7 @@ public abstract class FileUtil
 		return bytes;
 	}
 
-	public static byte[] Read(File file) throws IOException
-	{
+    public static byte[] read(File file) throws IOException {
 		int size = (int) file.length();
 		byte[] bytes = new byte[size];
 		try
@@ -99,43 +93,29 @@ public abstract class FileUtil
 //		return bos.toByteArray();
 	}
 
-	public static void SaveBitmap(Bitmap result, String path)
-	{
-		FileOutputStream out = null;
-		try
-		{
-			out = new FileOutputStream(path);
-			result.compress(Bitmap.CompressFormat.JPEG, 85, out);
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		} finally
-		{
-			try
-			{
-				if (out != null)
-				{
-					out.close();
-				}
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
 
-	public static Bitmap LoadBitmap(String imgPath)
-	{
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inPreferredConfig = Bitmap.Config.RGB_565;
-		try
-		{
-			return BitmapFactory.decodeFile(imgPath, options);
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public static void deleteRecursive(String path) {
+        File f = new File(path);
+        if (f.isDirectory())
+            for (File child : f.listFiles())
+                deleteRecursive(child.getAbsolutePath());
 
+        f.delete();
+    }
+
+    @SuppressLint("NewApi")
+    public static long getFreeSpace(String path) {
+        StatFs stat = new StatFs(path);
+        long sdAvailSize;
+        if (Util.getApiLvl() >= 18) {
+            sdAvailSize = stat.getAvailableBlocksLong()
+                    * stat.getBlockSizeLong();
+        } else if (Util.getApiLvl() >= 9)
+            sdAvailSize = new File(path).getUsableSpace();
+        else
+            sdAvailSize = stat.getAvailableBlocks()
+                    * stat.getBlockSize();
+
+        return sdAvailSize;
+    }
 }
