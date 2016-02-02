@@ -10,13 +10,8 @@
 package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.app.*;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,33 +24,19 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.StatFs;
+import android.os.*;
 import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.*;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.GridView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import ru.maxdestroyer.utils.net.HostChecker;
+import ru.maxdestroyer.utils.visual.WakeLocker;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -66,9 +47,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import ru.maxdestroyer.utils.net.HostChecker;
-import ru.maxdestroyer.utils.visual.WakeLocker;
 
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")
@@ -784,10 +762,10 @@ public abstract class Util
 		root.setLayoutParams(layoutParams);
 		// Scale the view's padding
 		root.setPadding((int) (root.getPaddingLeft() * scale),
-				(int) (root.getPaddingTop() * scale),
-				(int) (root.getPaddingRight() * scale),
-				(int) (root.getPaddingBottom() * scale));
-		// If the root view is a TextView, scale the size of its text
+                (int) (root.getPaddingTop() * scale),
+                (int) (root.getPaddingRight() * scale),
+                (int) (root.getPaddingBottom() * scale));
+        // If the root view is a TextView, scale the size of its text
 
 		if (root instanceof TextView)
 		{
@@ -884,6 +862,19 @@ public abstract class Util
             Util.log("Util::call failed, ActivityNotFoundException " + e.toString());
         }
 	}
+
+    public static void sendEmail(Context context, String to, String subject, String text) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{to});
+        i.putExtra(Intent.EXTRA_SUBJECT, to);
+        i.putExtra(Intent.EXTRA_TEXT, text);
+        try {
+            context.startActivity(Intent.createChooser(i, "Отправить email через"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public static long getFreeExternalMemory() {
 		File path = Environment.getDataDirectory();
@@ -1117,7 +1108,9 @@ public abstract class Util
 	}
 
     public static int getLongestSide(Activity context) {
-        return Util.getScreenWidth(context) > Util.getScreenHeight(context) ? Util.getScreenWidth(context) : Util.getScreenHeight(context);
+        return Util.getScreenWidth(context) > Util.getScreenHeight(context) ? Util.getScreenWidth(context) :
+                Util.getScreenHeight(
+                        context);
     }
 
     public static String genGUID() {
