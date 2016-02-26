@@ -47,4 +47,15 @@ public class VIewz
 //    android:fadingEdge="none"
 //    android:fadingEdgeLength="0dp"
 //    android:numColumns="2" />
+
+//    <ExpandableListView
+//    android:id="@+id/elv"
+//    android:layout_width="match_parent"
+//    android:layout_height="wrap_content"
+//    android:layout_marginTop="0dp"
+//    android:dividerHeight="1dp"
+//    android:background="@color/white"
+//    android:layout_marginBottom="0dp"
+//    android:descendantFocusability="beforeDescendants"
+//    android:padding="0dp" />
 }

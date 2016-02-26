@@ -234,8 +234,7 @@ public abstract class UtilActivity extends Activity implements OnClickListener
 		return findViewById(id);
 	}
 
-
-	public static void ShowDialog(final String msg)
+	public static void showDialog(final String msg)
 	{
 		_this.runOnUiThread(new Runnable()
 		{
@@ -262,21 +261,18 @@ public abstract class UtilActivity extends Activity implements OnClickListener
 		});
 	}
 
-	public static void CancelDial()
+	public static void cancelDial()
 	{
-		// ������ � UI ������!
-		_this.runOnUiThread(new Runnable()
-		{
+		_this.runOnUiThread(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				if (_this.pDialog.isShowing())
 					_this.pDialog.cancel();
 			}
 		});
 	}
-	
-	protected static void RunDelayed(final Runnable r, final int delay)
+
+	protected static void runDelayed(final Runnable r, final int delay)
 	{
 		_this.runOnUiThread(new Runnable()
 		{
@@ -288,7 +284,7 @@ public abstract class UtilActivity extends Activity implements OnClickListener
 		});
 	}
 
-	public static void Run(final Runnable r)
+	public static void run(final Runnable r)
 	{
 		_this.runOnUiThread(r);
 	}

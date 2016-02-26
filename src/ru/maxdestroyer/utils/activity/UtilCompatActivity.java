@@ -43,14 +43,14 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     public static UtilCompatActivity _this = null;
     protected Integer realW = 0;
     protected Integer realH = 0;
-    protected int width;
-    protected int height;
+    protected int width = 0;
+    protected int height = 0;
     private Toast toast = null;
     protected boolean msg_queued = false;
     public ProgressDialog pDialog = null;
     public static UtilConfig cfg = null;
     public boolean currentlyVisible = true;
-    public Handler handler;
+    public Handler handler = null;
     private boolean blockBack = false;
 
     @Override
@@ -61,7 +61,7 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
             setContentView(getLayoutId());
         }
         _this = this;
-        GetWandH();
+        getWandH();
         cfg = UtilConfig.getInstance().init(this);
         pDialog = new ProgressDialog(this);
         handler = new Handler();
@@ -75,7 +75,6 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
 
     /**
      * Layout id
-     *
      * @return can be 0
      */
     protected abstract int getLayoutId();
@@ -131,16 +130,18 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        GetWandH();
+        getWandH();
     }
 
+    /**
+     * get real device Width and Height
+     */
     @SuppressLint("NewApi")
-    protected void GetWandH() {
+    protected void getWandH() {
         final DisplayMetrics metrics = new DisplayMetrics();
         Display display = getWindowManager().getDefaultDisplay();
 
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        // ��� ���������������
         width = metrics.widthPixels;
         height = metrics.heightPixels;
 
@@ -150,7 +151,6 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
             try {
                 mGetRawH = Display.class.getMethod("getRawHeight");
                 mGetRawW = Display.class.getMethod("getRawWidth");
-                // ��� ��������
                 realW = (Integer) mGetRawW.invoke(display);
                 realH = (Integer) mGetRawH.invoke(display);
             } catch (Exception e) {
@@ -194,7 +194,7 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
         return getString(res);
     }
 
-    protected boolean IsLand() {
+    protected boolean isLand() {
         return Util.isLand(_this);
     }
 
@@ -235,7 +235,7 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     }
 
 
-    public static void ShowDialog(final String msg) {
+    public static void showDialog(final String msg) {
         _this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -260,8 +260,7 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
         });
     }
 
-    public static void CancelDial() {
-        // ������ � UI ������!
+    public static void cancelDial() {
         _this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -272,7 +271,7 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
         });
     }
 
-    protected static void RunDelayed(final Runnable r, final int delay) {
+    protected static void runDelayed(final Runnable r, final int delay) {
         _this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -281,11 +280,11 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
         });
     }
 
-    public static void Run(final Runnable r) {
+    public static void run(final Runnable r) {
         _this.runOnUiThread(r);
     }
 
-    public void Back() {
+    public void back() {
         Util.back(this);
     }
 
@@ -306,30 +305,25 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     }
 
     //@Override
-    public void OnTaskFinish(Object[] param) {
+    public void onTaskFinish(Object[] param) {
     }
 
     @Override
     protected void onDestroy() {
-        //_this = null; // �� ���� ���, ������ ��
         currentlyVisible = false;
-        //db.close();
         super.onDestroy();
     }
-
-    ;
 
     @Override
     protected void onPause() {
         currentlyVisible = false;
-
         super.onPause();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && blockBack) {
-            //preventing default implementation previous to android.os.Build.VERSION_CODES.ECLAIR
+            // preventing any action
             return true;
         }
         return super.onKeyDown(keyCode, event);

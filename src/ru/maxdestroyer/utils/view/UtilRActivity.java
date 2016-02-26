@@ -43,7 +43,7 @@
 //	{
 //		super.onCreate(savedInstanceState);
 //		_this = this;
-//		GetWandH();
+//		getWandH();
 //		cfg = new UtilConfig(this);
 //		pDialog = new ProgressDialog(this);
 //		handler = new Handler();
@@ -106,11 +106,11 @@
 //	public void onConfigurationChanged(Configuration newConfig)
 //	{
 //		super.onConfigurationChanged(newConfig);
-//		GetWandH();
+//		getWandH();
 //	}
 //
 //	@SuppressLint("NewApi")
-//	protected void GetWandH()
+//	protected void getWandH()
 //	{
 //		final DisplayMetrics metrics = new DisplayMetrics();
 //	    Display display = getWindowManager().getDefaultDisplay();
@@ -212,7 +212,7 @@
 //	}
 //
 //
-//	public static void ShowDialog(final String msg)
+//	public static void showDialog(final String msg)
 //	{
 //		_this.runOnUiThread(new Runnable()
 //		{
@@ -239,7 +239,7 @@
 //		});
 //	}
 //
-//	public static void CancelDial()
+//	public static void cancelDial()
 //	{
 //		// ������ � UI ������!
 //		_this.runOnUiThread(new Runnable()
@@ -253,7 +253,7 @@
 //		});
 //	}
 //
-//	protected static void RunDelayed(final Runnable r, final int delay)
+//	protected static void runDelayed(final Runnable r, final int delay)
 //	{
 //		_this.runOnUiThread(new Runnable()
 //		{
@@ -265,7 +265,7 @@
 //		});
 //	}
 //
-//	public static void Run(final Runnable r)
+//	public static void run(final Runnable r)
 //	{
 //		_this.runOnUiThread(r);
 //	}
