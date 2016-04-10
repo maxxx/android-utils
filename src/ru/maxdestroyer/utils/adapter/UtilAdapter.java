@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.annotation.processor.AnnProcessor;
 
+/**
+ * @param <T> your entity class
+ * @param <H> your view holder, should be implemented as separate class
+ */
 public abstract class UtilAdapter<T, H extends UtilAdapter.BaseViewHolder> extends BaseAdapter {
 
     protected final Activity context;
@@ -94,7 +98,7 @@ public abstract class UtilAdapter<T, H extends UtilAdapter.BaseViewHolder> exten
      */
     protected abstract void onGetView(final T item, final H holder, final int position);
 
-    protected static class BaseViewHolder {
+    public static class BaseViewHolder {
         protected final View view;
 
         public BaseViewHolder(final View view) {
