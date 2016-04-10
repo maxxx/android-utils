@@ -10,8 +10,13 @@
 package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
-import android.app.*;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,22 +26,38 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StatFs;
+import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.*;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
-import ru.maxdestroyer.utils.net.HostChecker;
-import ru.maxdestroyer.utils.visual.WakeLocker;
+import android.widget.GridView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -47,6 +68,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ru.maxdestroyer.utils.net.HostChecker;
+import ru.maxdestroyer.utils.visual.WakeLocker;
 
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")
@@ -1049,6 +1073,45 @@ public abstract class Util
 		}
 		return count;
 	}
+
+    /**
+     * can use with askEnablingGPS(ctx);
+     *
+     * @param ctx
+     * @return
+     */
+    public static boolean isGPSEnabled(Context ctx) {
+        final LocationManager manager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    public static void askEnablingGPS(
+            final Activity activity) {
+        final AlertDialog.Builder builder =
+                new AlertDialog.Builder(activity);
+        final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+        final String message = "Enable either GPS or any other location"
+                + " service for location logs.  Click OK to go to"
+                + " location services settings to let you do so.";
+
+        builder.setMessage(message)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface d, int id) {
+                                activity.startActivity(new Intent(action));
+                                d.dismiss();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface d, int id) {
+                                d.cancel();
+                            }
+                        });
+        builder.create().show();
+    }
 
     public static void back(Activity mActivity) {
 		KeyEvent backEvtDown = new KeyEvent(KeyEvent.ACTION_DOWN,

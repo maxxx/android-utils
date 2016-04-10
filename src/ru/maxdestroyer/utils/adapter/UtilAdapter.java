@@ -13,12 +13,13 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import butterknife.ButterKnife;
-import ru.maxdestroyer.utils.annotation.processor.AnnProcessor;
 
 import java.util.ArrayList;
 
-public class UtilAdapter<T> extends BaseAdapter {
+import butterknife.ButterKnife;
+import ru.maxdestroyer.utils.annotation.processor.AnnProcessor;
+
+public abstract class UtilAdapter<T, H extends UtilAdapter.BaseViewHolder> extends BaseAdapter {
 
     protected final Activity context;
     private final int row;
@@ -36,7 +37,7 @@ public class UtilAdapter<T> extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(final int i) {
+    public T getItem(final int i) {
         return data.get(i);
     }
 
@@ -45,19 +46,28 @@ public class UtilAdapter<T> extends BaseAdapter {
         return i;
     }
 
+    public void setData(final ArrayList<T> data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }
 
-    public void setData(final ArrayList<T> tasks) {
-        this.data = tasks;
+    public void addItem(final T item) {
+        this.data.add(item);
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(final T item) {
+        this.data.remove(item);
         notifyDataSetChanged();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final BaseViewHolder holder;
-        T currentItem = (T) getItem(position);
+        final H holder;
+        T currentItem = getItem(position);
 
         if (convertView != null && convertView.getTag() != null) {
-            holder = (BaseViewHolder) convertView.getTag();
+            holder = (H) convertView.getTag();
         } else {
             convertView = context.getLayoutInflater().inflate(row, parent, false);
             holder = initHolder(convertView);
@@ -75,16 +85,14 @@ public class UtilAdapter<T> extends BaseAdapter {
         return convertView;
     }
 
-    protected BaseViewHolder initHolder(final View convertView) {
-        return new BaseViewHolder(convertView);
-    }
+    protected abstract H initHolder(final View convertView);/* {
+        return (H) new BaseViewHolder(convertView);
+    }*/
 
     /**
      * Additional processing
      */
-    protected void onGetView(final T currentItem, final BaseViewHolder baseHolder, final int position) {
-
-    }
+    protected abstract void onGetView(final T item, final H holder, final int position);
 
     protected static class BaseViewHolder {
         protected final View view;
