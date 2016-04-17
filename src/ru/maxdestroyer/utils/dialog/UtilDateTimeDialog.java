@@ -54,8 +54,14 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
     private int selectedHour, selectedMinute;
 
+    private boolean canPast = true;
+
+
+    /**
+     * @param withTime - if = false -> date only
+     */
     public UtilDateTimeDialog(Context a,
-                              ICustomDateTimeListener customDateTimeListener) {
+                              ICustomDateTimeListener customDateTimeListener, boolean withTime) {
         activity = a;
         iCustomDateTimeListener = customDateTimeListener;
 
@@ -67,15 +73,13 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
             }
         });
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        View dialogView = getDateTimePickerLayout();
+        View dialogView = getDateTimePickerLayout(withTime);
         dialog.setContentView(dialogView);
     }
 
-    public View getDateTimePickerLayout() {
-
-
+    public View getDateTimePickerLayout(boolean withTime) {
         LinearLayout.LayoutParams linear_match_wrap = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -129,7 +133,8 @@ public class UtilDateTimeDialog implements View.OnClickListener {
             }
         });
 
-        viewSwitcher.addView(timePicker);
+        if (withTime)
+            viewSwitcher.addView(timePicker);
         viewSwitcher.addView(datePicker);
 
         LinearLayout linear_bottom = new LinearLayout(activity);
@@ -159,7 +164,8 @@ public class UtilDateTimeDialog implements View.OnClickListener {
         //errMsg.setTypeface(face);
         errMsg.setVisibility(View.GONE);
 
-        linear_child.addView(linear_top);
+        if (withTime)
+            linear_child.addView(linear_top);
         linear_child.addView(viewSwitcher);
         linear_child.addView(errMsg);
         linear_child.addView(linear_bottom);
@@ -303,10 +309,11 @@ public class UtilDateTimeDialog implements View.OnClickListener {
                                     + datePicker.getMonth() + "Date "
                                     + cal.get(Calendar.DAY_OF_MONTH) + " "
                                     + datePicker.getDayOfMonth());
-                    if (cal.get(Calendar.YEAR) <= datePicker.getYear()
+                    if (canPast || (cal.get(Calendar.YEAR) <= datePicker.getYear()
                             && cal.get(Calendar.MONTH) <= datePicker.getMonth()
                             && cal.get(Calendar.DAY_OF_MONTH) <= datePicker
-                            .getDayOfMonth()) {
+                            .getDayOfMonth())) {
+                        errMsg.setVisibility(View.GONE);
                         calendar_date.set(year, month, day, selectedHour,
                                 selectedMinute);
 
@@ -449,5 +456,14 @@ public class UtilDateTimeDialog implements View.OnClickListener {
             return String.valueOf(integerToPad);
         else
             return "0" + String.valueOf(integerToPad);
+    }
+
+    /**
+     * can user past time
+     *
+     * @param canPast
+     */
+    public void setCanPast(boolean canPast) {
+        this.canPast = canPast;
     }
 }
