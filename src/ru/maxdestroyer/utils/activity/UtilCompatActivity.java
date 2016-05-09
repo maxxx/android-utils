@@ -26,6 +26,7 @@ import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +57,8 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (!hasTitle())
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (getLayoutId() != 0) {
             setContentView(getLayoutId());
         }
@@ -65,6 +67,10 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
         cfg = UtilConfig.getInstance().init(this);
         pDialog = new ProgressDialog(this);
         handler = new Handler();
+    }
+
+    protected boolean hasTitle() {
+        return true;
     }
 
     @Override
