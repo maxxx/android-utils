@@ -29,12 +29,12 @@ import java.io.IOException;
  */
 public class ImageUtils {
 
-    public static int dpToPix(int dp) {
+    public static int dpToPix(float dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
-    public static int pixToDp(int px) {
-        return (int) (px / Resources.getSystem().getDisplayMetrics().density);
+    public static float pixToDp(int px) {
+        return (float) px / Resources.getSystem().getDisplayMetrics().density;
     }
 
     public static void saveBitmap(Bitmap result, String path) {
