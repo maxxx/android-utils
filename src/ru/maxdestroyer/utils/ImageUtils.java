@@ -10,7 +10,6 @@
 package ru.maxdestroyer.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -18,7 +17,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
 import android.view.View;
 
 import java.io.File;
@@ -31,15 +29,12 @@ import java.io.IOException;
  */
 public class ImageUtils {
 
-    public static int dpToPix(Context c, float dips) {
-        return (int) (dips * c.getResources().getDisplayMetrics().density + 0.5f);
+    public static int dpToPix(int dp) {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
-    public static float pixToDp(Context c, float px) {
-        Resources resources = c.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float dp = px / (metrics.densityDpi / 160f);
-        return dp;
+    public static int pixToDp(int px) {
+        return (int) (px / Resources.getSystem().getDisplayMetrics().density);
     }
 
     public static void saveBitmap(Bitmap result, String path) {
