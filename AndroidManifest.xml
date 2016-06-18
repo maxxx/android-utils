@@ -6,9 +6,9 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="22" />
 
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -19,10 +19,7 @@
 
     <application
             android:allowBackup="true"
-            android:hardwareAccelerated="true"
-            android:icon="@drawable/ic_launcher_def"
-            android:label="utils"
-            android:theme="@style/AppThemeDark" >
+        android:hardwareAccelerated="true">
     </application>
 
     <!--android:launchMode="singleTop"-->

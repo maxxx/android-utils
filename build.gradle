@@ -21,16 +21,16 @@ group='com.github.maxx'
 
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:percent:23.2.1'
-    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.android.support:percent:24.0.0'
+    compile 'com.android.support:design:24.0.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     //compile 'com.jakewharton:butterknife:8.0.0-SNAPSHOT'
     //apt 'com.jakewharton:butterknife-compiler:8.0.0-SNAPSHOT'
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.2"
 
     sourceSets {
