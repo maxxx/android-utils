@@ -29,11 +29,9 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import butterknife.ButterKnife;
 import java.lang.reflect.Method;
 import java.util.List;
-
-import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.Util;
 import ru.maxdestroyer.utils.UtilConfig;
 import ru.maxdestroyer.utils.fragment.UtilFragment;
@@ -57,8 +55,10 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!hasTitle())
+        if (!hasTitle()) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
+            supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
         if (getLayoutId() != 0) {
             setContentView(getLayoutId());
         }
