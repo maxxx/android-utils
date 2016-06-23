@@ -53,7 +53,7 @@ public abstract class UtilCompatActivityWithHolder<T extends ActivityViewHolder>
     }
 
     if (getLayoutId() != 0) {
-      holder = buildHolder(this);
+      holder = buildHolder(this, getLayoutId());
       setContentView(holder.getRootView());
     } else {
       throw new RuntimeException(getClass().getSimpleName() + " called with layout id = 0");
@@ -64,8 +64,8 @@ public abstract class UtilCompatActivityWithHolder<T extends ActivityViewHolder>
     handler = new Handler();
   }
 
-  protected abstract T buildHolder(Activity context);/* {
-    return T_.build(this);
+  protected abstract T buildHolder(Activity context, int layoutId);/* {
+    return T.build(this);
   }*/
 
   protected boolean hasTitle() {

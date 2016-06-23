@@ -20,9 +20,10 @@ public abstract class ActivityViewHolder {
 
   protected View root;
 
-  public final void build(Activity context, int layId) {
+  public View build(Activity context, int layId) {
     root = context.getLayoutInflater().inflate(layId, null);
     ButterKnife.bind(this, root);
+    return root;
   }
 
   public View getRootView() {
