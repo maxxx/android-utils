@@ -9,7 +9,6 @@
 
 package ru.maxdestroyer.utils.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -27,14 +26,18 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.ButterKnife;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import ru.maxdestroyer.utils.Util;
 import ru.maxdestroyer.utils.UtilConfig;
 import ru.maxdestroyer.utils.fragment.UtilFragment;
 import ru.maxdestroyer.utils.view.ActivityViewHolder;
 
-// ru.maxdestroyer.utils.activity.UtilActivity
-@SuppressWarnings("unused")
+/**
+ * @param <T> - required, must use your own holder
+ */
 public abstract class UtilCompatActivityWithHolder<T extends ActivityViewHolder>
     extends AppCompatActivity implements OnClickListener {
   protected T holder;
@@ -53,7 +56,8 @@ public abstract class UtilCompatActivityWithHolder<T extends ActivityViewHolder>
     }
 
     if (getLayoutId() != 0) {
-      holder = buildHolder(this, getLayoutId());
+      Class<T> holderClass = getGenericTypeClass();
+      holder = buildHolder(holderClass);
       setContentView(holder.getRootView());
     } else {
       throw new RuntimeException(getClass().getSimpleName() + " called with layout id = 0");
@@ -64,9 +68,21 @@ public abstract class UtilCompatActivityWithHolder<T extends ActivityViewHolder>
     handler = new Handler();
   }
 
-  protected abstract T buildHolder(Activity context, int layoutId);/* {
-    return T.build(this);
-  }*/
+  private T buildHolder(Class<T> holderClass) {
+    Constructor<?> constructor = holderClass.getConstructors()[0];
+    try {
+      T instance = (T) constructor.newInstance();
+      instance.build(this, getLayoutId());
+      return instance;
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (InvocationTargetException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
   protected boolean hasTitle() {
     return true;
@@ -242,5 +258,18 @@ public abstract class UtilCompatActivityWithHolder<T extends ActivityViewHolder>
       return true;
     }
     return super.onKeyDown(keyCode, event);
+  }
+
+  @SuppressWarnings("unchecked") private Class<T> getGenericTypeClass() {
+    try {
+      String className =
+          ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getClass()
+              .getName();
+      Class<?> clazz = Class.forName(className);
+      return (Class<T>) clazz;
+    } catch (Exception e) {
+      throw new IllegalStateException(
+          "Class is not parametrized with generic type!!! Please use extends <> ");
+    }
   }
 }
