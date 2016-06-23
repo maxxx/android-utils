@@ -262,10 +262,8 @@ public abstract class UtilCompatActivityWithHolder<T extends ActivityViewHolder>
 
   @SuppressWarnings("unchecked") private Class<T> getGenericTypeClass() {
     try {
-      String className =
-          ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getClass()
-              .getName();
-      Class<?> clazz = Class.forName(className);
+      Class<?> clazz =
+          (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
       return (Class<T>) clazz;
     } catch (Exception e) {
       throw new IllegalStateException(
