@@ -92,13 +92,13 @@ public abstract class UtilAdapter<T, H extends UtilAdapter.BaseViewHolder> exten
 
     private H initHolder(final View convertView) {
         Class<T> holderClass = getHolderClass();
-        return (H) buildHolder(holderClass);
+        return (H) buildHolder(holderClass, convertView);
     }
 
-    private T buildHolder(Class<T> holderClass) {
+    private T buildHolder(Class<T> holderClass, View convertView) {
         Constructor<?> constructor = holderClass.getConstructors()[0];
         try {
-            T instance = (T) constructor.newInstance();
+            T instance = (T) constructor.newInstance(convertView);
             return instance;
         } catch (InstantiationException e) {
             e.printStackTrace();
