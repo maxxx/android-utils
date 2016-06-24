@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import java.lang.reflect.Method;
 import java.util.List;
+import ru.maxdestroyer.utils.R;
 import ru.maxdestroyer.utils.Util;
 import ru.maxdestroyer.utils.UtilConfig;
 import ru.maxdestroyer.utils.fragment.UtilFragment;
@@ -335,5 +337,28 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
         return super.onKeyDown(keyCode, event);
     }
 
+    /**
+     * must implement getFragmentContainerId() before using
+     */
+    public void goFragment(final Fragment fragment, boolean backstack) {
+        if (getVisibleFragment() != null
+            && getVisibleFragment().getClass() == fragment.getClass()
+            && fragment.getArguments() == null) {
+            return;
+        }
 
+        FragmentTransaction fr = getSupportFragmentManager().beginTransaction();
+        if (backstack) {
+            fr = fr.addToBackStack(fragment.toString());
+        }
+
+        fr.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
+            android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            .replace(getFragmentContainerId(), fragment)
+            .commitAllowingStateLoss();
+    }
+
+    protected int getFragmentContainerId() {
+        return 0;
+    }
 }
