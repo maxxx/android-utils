@@ -10,12 +10,12 @@ package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
 import android.os.StatFs;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
@@ -122,14 +122,19 @@ public abstract class FileUtils
         return sdAvailSize;
     }
 
-    public static void unzip(File zipFile, File targetDirectory) throws IOException {
+  /**
+   * @return first file
+   * @throws IOException
+   */
+  public static File unzip(File zipFile, File targetDirectory) throws IOException {
+    File result = null;
         ZipInputStream zis = new ZipInputStream(
                 new BufferedInputStream(new FileInputStream(zipFile)));
         try {
             ZipEntry ze;
             int count;
-            byte[] buffer = new byte[8192];
-            while ((ze = zis.getNextEntry()) != null) {
+          byte[] buffer = new byte[8 * 1024];
+          while ((ze = zis.getNextEntry()) != null) {
                 File file = new File(targetDirectory, ze.getName());
                 File dir = ze.isDirectory() ? file : file.getParentFile();
                 if (!dir.isDirectory() && !dir.mkdirs())
@@ -144,6 +149,9 @@ public abstract class FileUtils
                 } finally {
                     fout.close();
                 }
+            if (result == null) {
+              result = file;
+            }
                 /* if time should be restored as well
 				long time = ze.getTime();
 				if (time > 0)
@@ -152,14 +160,41 @@ public abstract class FileUtils
         } finally {
             zis.close();
         }
+    return result;
     }
 
     /**
      * @param url like http://some.com/1.zip?param=true#5
-     * @return 1.zip
+     * @return name.ext
      */
     public static String getFileNameFromUrl(URL url) {
         String urlString = url.getFile();
         return urlString.substring(urlString.lastIndexOf('/') + 1).split("\\?")[0].split("#")[0];
     }
+
+  /**
+   * @param ext - "jpg" etc...
+   * @return первый найденный файл
+   */
+  public static File getFileInDir(File dir, final String ext) {
+    File[] files = getFilesInDir(dir, ext);
+
+    if (files != null && files.length > 0) return files[0];
+
+    return null;
+  }
+
+  /**
+   * @param ext - "jpg" etc...
+   * @return все файлы
+   */
+  public static File[] getFilesInDir(File dir, final String ext) {
+    File[] files = dir.listFiles(new FilenameFilter() {
+      @Override public boolean accept(File dir, String name) {
+        return name.endsWith("." + ext);
+      }
+    });
+
+    return files;
+  }
 }
