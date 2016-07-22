@@ -16,13 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.ViewSwitcher;
+import android.widget.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -56,12 +50,14 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
     private boolean canPast = true;
 
+    public enum Mode {
+        FULL,
+        DATE_ONLY,
+        TIME_ONLY
+    }
 
-    /**
-     * @param withTime - if = false -> date only
-     */
     public UtilDateTimeDialog(Context a,
-                              ICustomDateTimeListener customDateTimeListener, boolean withTime) {
+                              ICustomDateTimeListener customDateTimeListener, Mode mode) {
         activity = a;
         iCustomDateTimeListener = customDateTimeListener;
 
@@ -75,11 +71,11 @@ public class UtilDateTimeDialog implements View.OnClickListener {
         });
         dialog.setCancelable(true);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        View dialogView = getDateTimePickerLayout(withTime);
+        View dialogView = getDateTimePickerLayout(mode);
         dialog.setContentView(dialogView);
     }
 
-    public View getDateTimePickerLayout(boolean withTime) {
+    public View getDateTimePickerLayout(Mode mode) {
         LinearLayout.LayoutParams linear_match_wrap = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -133,9 +129,18 @@ public class UtilDateTimeDialog implements View.OnClickListener {
             }
         });
 
-        if (withTime)
-            viewSwitcher.addView(timePicker);
-        viewSwitcher.addView(datePicker);
+        switch (mode) {
+            case FULL:
+                viewSwitcher.addView(timePicker);
+                viewSwitcher.addView(datePicker);
+                break;
+            case DATE_ONLY:
+                viewSwitcher.addView(datePicker);
+                break;
+            case TIME_ONLY:
+                viewSwitcher.addView(timePicker);
+                break;
+        }
 
         LinearLayout linear_bottom = new LinearLayout(activity);
         linear_match_wrap.topMargin = 8;
@@ -164,8 +169,16 @@ public class UtilDateTimeDialog implements View.OnClickListener {
         //errMsg.setTypeface(face);
         errMsg.setVisibility(View.GONE);
 
-        if (withTime)
-            linear_child.addView(linear_top);
+        // mode selector
+        switch (mode) {
+            case FULL:
+                linear_child.addView(linear_top);
+                break;
+            case DATE_ONLY:
+            case TIME_ONLY:
+                break;
+        }
+
         linear_child.addView(viewSwitcher);
         linear_child.addView(errMsg);
         linear_child.addView(linear_bottom);
