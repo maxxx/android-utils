@@ -105,9 +105,9 @@ public abstract class ExampleAdapters
 //		}
 //
 //		@Override
-//		public View getView(int position, View convertView, ViewGroup parent)
+  //		public View getRootView(int position, View convertView, ViewGroup parent)
 //		{
-//			//ViewParent row = super.getView(position, convertView, parent);
+  //			//ViewParent row = super.getRootView(position, convertView, parent);
 //			ViewGroup view = (ViewGroup) inflater.inflate(row, parent, false);
 //
 //			for (int i = 0; i < view.getChildCount(); i++)

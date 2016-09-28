@@ -13,10 +13,11 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import ru.maxdestroyer.utils.annotation.processor.AnnProcessor;
 
 /**
@@ -89,9 +90,25 @@ public abstract class UtilAdapter<T, H extends UtilAdapter.BaseViewHolder> exten
         return convertView;
     }
 
-    protected abstract H initHolder(final View convertView);/* {
-        return (H) new BaseViewHolder(convertView);
-    }*/
+    private H initHolder(final View convertView) {
+        Class<T> holderClass = getHolderClass();
+        return (H) buildHolder(holderClass, convertView);
+    }
+
+    private T buildHolder(Class<T> holderClass, View convertView) {
+        Constructor<?> constructor = holderClass.getConstructors()[0];
+        try {
+            T instance = (T) constructor.newInstance(convertView);
+            return instance;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Additional processing
@@ -104,6 +121,17 @@ public abstract class UtilAdapter<T, H extends UtilAdapter.BaseViewHolder> exten
         public BaseViewHolder(final View view) {
             this.view = view;
             ButterKnife.bind(this, view);
+        }
+    }
+
+    @SuppressWarnings("unchecked") protected Class<T> getHolderClass() {
+        try {
+            Class<?> clazz =
+                (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            return (Class<T>) clazz;
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                "Class is not parametrized with generic type!!! Please use extends <> ");
         }
     }
 }
