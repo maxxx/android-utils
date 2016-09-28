@@ -196,6 +196,26 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
         return null;
     }
 
+//    public void goFragment(final Fragment fragment, boolean backstack) {
+//        if (getVisibleFragment() != null && getVisibleFragment().getClass() == fragment.getClass() && fragment.getArguments() == null)
+//            return;
+//
+//        FragmentTransaction fr = getSupportFragmentManager().beginTransaction();
+//        if (backstack) {
+//            fr = fr.addToBackStack(fragment.toString());
+//        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//        }
+//
+//        fr.setCustomAnimations(R.anim.slide_in_right,
+//                R.anim.slide_out_left,
+//                android.R.anim.slide_in_left,
+//                android.R.anim.slide_out_right)
+//                .replace(R.id.frag, fragment).commitAllowingStateLoss();
+//
+//        onFragmentChanged(fragment);
+//    }
+
     public String S(int res) {
         return getString(res);
     }
