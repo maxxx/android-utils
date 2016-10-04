@@ -103,7 +103,7 @@ public class UtilDateTimeDialog implements View.OnClickListener {
         linear_main.setLayoutParams(linear_match_wrap);
         linear_main.setOrientation(LinearLayout.VERTICAL);
         linear_main.setGravity(Gravity.CENTER);
-        linear_main.setMinimumWidth(ImageUtils.dpToPix(300.0f));
+        linear_main.setMinimumWidth(ImageUtils.dpToPix(250f));
 
         LinearLayout linear_child = new LinearLayout(activity);
         linear_child.setLayoutParams(linear_wrap_wrap);
@@ -156,6 +156,7 @@ public class UtilDateTimeDialog implements View.OnClickListener {
         LinearLayout linear_bottom = new LinearLayout(activity);
         linear_match_wrap.topMargin = 8;
         linear_bottom.setLayoutParams(linear_match_wrap);
+        linear_bottom.setMinimumWidth(ImageUtils.dpToPix(250f));
 
         btn_set = new Button(activity);
         btn_set.setLayoutParams(button_params);
