@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2016 Maxim Smirnov
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  -->
+
+<resources>
+    <string name="datedialog_set_date">Установить дату</string>
+    <string name="datedialog_set_time">Установить время</string>
+    <string name="datedialog_set">Установить</string>
+    <string name="datedialog_cancel">Отмена</string>
+    <string name="datedialog_error_past">Невозможно установить дату из прошлого</string>
+</resources>
