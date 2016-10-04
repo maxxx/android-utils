@@ -28,11 +28,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import ru.maxdestroyer.utils.ImageUtils;
 import ru.maxdestroyer.utils.R;
 
 /**
  * Created by Maxim S. on 08.12.2015.
  */
+@SuppressWarnings("ResourceType")
 public class UtilDateTimeDialog implements View.OnClickListener {
     private DatePicker datePicker;
     private TimePicker timePicker;
@@ -101,6 +103,7 @@ public class UtilDateTimeDialog implements View.OnClickListener {
         linear_main.setLayoutParams(linear_match_wrap);
         linear_main.setOrientation(LinearLayout.VERTICAL);
         linear_main.setGravity(Gravity.CENTER);
+        linear_main.setMinimumWidth(ImageUtils.dpToPix(300.0f));
 
         LinearLayout linear_child = new LinearLayout(activity);
         linear_child.setLayoutParams(linear_wrap_wrap);
