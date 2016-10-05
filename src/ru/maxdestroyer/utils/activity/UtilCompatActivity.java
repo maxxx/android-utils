@@ -9,17 +9,21 @@
 
 package ru.maxdestroyer.utils.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -30,17 +34,19 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.ButterKnife;
+
 import java.lang.reflect.Method;
 import java.util.List;
+
+import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.R;
 import ru.maxdestroyer.utils.Util;
 import ru.maxdestroyer.utils.UtilConfig;
 import ru.maxdestroyer.utils.fragment.UtilFragment;
 
-// ru.maxdestroyer.utils.activity.UtilActivity
 @SuppressWarnings("unused")
 public abstract class UtilCompatActivity extends AppCompatActivity implements OnClickListener {
+    protected static final int REQUEST_FINE_LOCATION = 333;
     public static UtilCompatActivity _this = null;
     protected Integer realW = 0;
     protected Integer realH = 0;
@@ -196,6 +202,34 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
             }
         }
         return null;
+    }
+
+    protected void requireGPS() {
+        if (Util.getApiLvl() < 23) {
+            Util.askEnablingGPS(this, null);
+            if (Util.isGPSEnabled(this))
+                onGPSEnabled();
+        } else // android 6+
+        {
+            if (loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_FINE_LOCATION)) {
+                onGPSEnabled();
+            }
+        }
+    }
+
+    protected void onGPSEnabled() {
+//        try
+//        {
+//            SmartLocation.with(this).location().config(lp)
+//                    .start(location -> NetService.updateGPS(User.loadOne().token, location.getLatitude(), location.getLongitude(),
+//                            (response, retrofit) -> {
+//                            }, t -> {
+//                            }));
+//        } catch (Exception e)
+//        {
+//            MSG(e.getLocalizedMessage());
+//            e.printStackTrace();
+//        }
     }
 
 //    public void goFragment(final Fragment fragment, boolean backstack) {
@@ -380,5 +414,31 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
 
     protected int getFragmentContainerId() {
         return 0;
+    }
+
+    private boolean loadPermissions(String perm, int requestCode) {
+        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
+                ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onGPSEnabled();
+                } else {
+                    // no granted
+                }
+                return;
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

@@ -155,6 +155,7 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
         LinearLayout linear_bottom = new LinearLayout(activity);
         linear_match_wrap.topMargin = 8;
+        linear_match_wrap.bottomMargin = 8;
         linear_bottom.setLayoutParams(linear_match_wrap);
         linear_bottom.setMinimumWidth(ImageUtils.dpToPix(250f));
 
