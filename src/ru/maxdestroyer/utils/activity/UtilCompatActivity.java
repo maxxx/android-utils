@@ -23,7 +23,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -206,7 +205,9 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
 
     protected void requireGPS() {
         if (Util.getApiLvl() < 23) {
-            Util.askEnablingGPS(this, null);
+            if (!Util.isGPSEnabled(this))
+                Util.askEnablingGPS(this, null);
+
             if (Util.isGPSEnabled(this))
                 onGPSEnabled();
         } else // android 6+
@@ -416,8 +417,8 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
         return 0;
     }
 
-    private boolean loadPermissions(String perm, int requestCode) {
-        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+    protected boolean loadPermissions(String perm, int requestCode) {
+        if (!hasPermission(perm)) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
                 ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
             }
@@ -440,5 +441,9 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public boolean hasPermission(String perm) {
+        return ActivityCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
     }
 }
