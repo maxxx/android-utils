@@ -60,6 +60,8 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
     private boolean canPast = true;
 
+    private Runnable onSet = null;
+
     public enum Mode {
         FULL,
         DATE_ONLY,
@@ -297,13 +299,13 @@ public class UtilDateTimeDialog implements View.OnClickListener {
     }
 
     public interface ICustomDateTimeListener {
-        public void onSet(Dialog dialog, Calendar calendarSelected,
-                          Date dateSelected, int year, String monthFullName,
-                          String monthShortName, int monthNumber, int date,
-                          String weekDayFullName, String weekDayShortName, int hour24,
-                          int hour12, int min, int sec, String AM_PM, long timeinMilliSec);
+        void onSet(Dialog dialog, Calendar calendarSelected,
+                   Date dateSelected, int year, String monthFullName,
+                   String monthShortName, int monthNumber, int date,
+                   String weekDayFullName, String weekDayShortName, int hour24,
+                   int hour12, int min, int sec, String AM_PM, long timeinMilliSec);
 
-        public void onCancel();
+        void onCancel();
     }
 
     @Override
@@ -366,6 +368,10 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
                         if (dialog.isShowing() && isAutoDismiss)
                             dialog.dismiss();
+
+
+                        if (onSet != null)
+                            onSet.run();
                     } else {
                         errMsg.setVisibility(View.VISIBLE);
                     }
@@ -491,5 +497,9 @@ public class UtilDateTimeDialog implements View.OnClickListener {
      */
     public void setCanPast(boolean canPast) {
         this.canPast = canPast;
+    }
+
+    public void setOnSetRunnable(Runnable onSet) {
+        this.onSet = onSet;
     }
 }
