@@ -12,16 +12,18 @@ package ru.maxdestroyer.utils.view;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
-import ru.maxdestroyer.utils.dialog.UtilDateTimeDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import ru.maxdestroyer.utils.dialog.UtilDateTimeDialog;
 
 import static ru.maxdestroyer.utils.dialog.UtilDateTimeDialog.Mode.FULL;
 import static ru.maxdestroyer.utils.dialog.UtilDateTimeDialog.Mode.TIME_ONLY;
@@ -36,6 +38,7 @@ public class DateEditText extends AppCompatEditText
 
     protected UtilDateTimeDialog.Mode mode = FULL;
     private Calendar myCalendar;
+    private Runnable onSet = null;
 
 
     public DateEditText(final Context context) {
@@ -48,6 +51,10 @@ public class DateEditText extends AppCompatEditText
         _context = context;
         setFocusable(false);
         setOnClickListener(this);
+    }
+
+    private void setOnSetRunnable(Runnable run) {
+        this.onSet = run;
     }
 
     public DateEditText(final Context context, final AttributeSet attrs) {
@@ -73,7 +80,7 @@ public class DateEditText extends AppCompatEditText
     public void onClick(View v) {
         switch (mode) {
             case FULL:
-                UtilDateTimeDialog custom = new UtilDateTimeDialog(_context,
+                final UtilDateTimeDialog custom = new UtilDateTimeDialog(_context,
                         new UtilDateTimeDialog.ICustomDateTimeListener() {
 
                             @Override
@@ -101,12 +108,20 @@ public class DateEditText extends AppCompatEditText
                             }
                         }, mode);
                 custom.setDate(Calendar.getInstance());
+                custom.setOnSetRunnable(onSet);
                 custom.showDialog();
                 break;
             case DATE_ONLY:
                 DatePickerDialog dialog = new DatePickerDialog(_context, this, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH));
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        if (onSet != null)
+                            onSet.run();
+                    }
+                });
                 dialog.show();
                 break;
             case TIME_ONLY:
@@ -138,6 +153,7 @@ public class DateEditText extends AppCompatEditText
                             }
                         }, mode);
                 custom2.setDate(Calendar.getInstance());
+                custom2.setOnSetRunnable(onSet);
                 custom2.showDialog();
                 break;
         }
