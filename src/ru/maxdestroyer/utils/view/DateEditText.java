@@ -53,7 +53,7 @@ public class DateEditText extends AppCompatEditText
         setOnClickListener(this);
     }
 
-    private void setOnSetRunnable(Runnable run) {
+    public void setOnSetRunnable(Runnable run) {
         this.onSet = run;
     }
 
