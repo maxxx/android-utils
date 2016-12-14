@@ -205,6 +205,36 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
 		return null;
 	}
 
+	protected void requireGPS() {
+		if (Util.getApiLvl() < 23) {
+			if (!Util.isGPSEnabled(this))
+				Util.askEnablingGPS(this, null);
+
+			if (Util.isGPSEnabled(this))
+				onGPSEnabled();
+		} else // android 6+
+		{
+			if (loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_FINE_LOCATION)) {
+				onGPSEnabled();
+			}
+		}
+	}
+
+	protected void onGPSEnabled() {
+//        try
+//        {
+//            SmartLocation.with(this).location().config(lp)
+//                    .start(location -> NetService.updateGPS(User.loadOne().token, location.getLatitude(), location.getLongitude(),
+//                            (response, retrofit) -> {
+//                            }, t -> {
+//                            }));
+//        } catch (Exception e)
+//        {
+//            MSG(e.getLocalizedMessage());
+//            e.printStackTrace();
+//        }
+	}
+
     public String S(int res) {
         return getString(res);
     }
@@ -368,4 +398,34 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
     protected int getFragmentContainerId() {
         return 0;
     }
+
+	protected boolean loadPermissions(String perm, int requestCode) {
+		if (!hasPermission(perm)) {
+			if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
+				ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
+			}
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		switch (requestCode) {
+			case REQUEST_FINE_LOCATION: {
+				// If request is cancelled, the result arrays are empty.
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					onGPSEnabled();
+				} else {
+					// no granted
+				}
+				return;
+			}
+		}
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	}
+
+	public boolean hasPermission(String perm) {
+		return ActivityCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
+	}
 }

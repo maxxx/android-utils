@@ -11,11 +11,13 @@ package ru.maxdestroyer.utils.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -313,5 +315,9 @@ public abstract class UtilCompatActivityWithHolder<T extends ActivityViewHolder>
 			throw new IllegalStateException(
 					"Class is not parametrized with generic type!!! Please use extends <> ");
 		}
+	}
+
+	public boolean hasPermission(String perm) {
+		return ActivityCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
 	}
 }
