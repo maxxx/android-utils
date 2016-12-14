@@ -9,14 +9,17 @@
 
 package ru.maxdestroyer.utils.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,21 +43,21 @@ import ru.maxdestroyer.utils.Util;
 import ru.maxdestroyer.utils.UtilConfig;
 import ru.maxdestroyer.utils.fragment.UtilFragment;
 
-// ru.maxdestroyer.utils.activity.UtilActivity
 @SuppressWarnings("unused")
 public abstract class UtilCompatActivity extends AppCompatActivity implements OnClickListener {
-	public static UtilCompatActivity _this = null;
-	protected Integer realW = 0;
-	protected Integer realH = 0;
-	protected int width = 0;
-	protected int height = 0;
-	private Toast toast = null;
-	protected boolean msg_queued = false;
-	public ProgressDialog pDialog = null;
-	public static UtilConfig cfg = null;
-	public boolean currentlyVisible = true;
-	public Handler handler = null;
-	private boolean blockBack = false;
+    protected static final int REQUEST_FINE_LOCATION = 333;
+    public static UtilCompatActivity _this = null;
+    protected Integer realW = 0;
+    protected Integer realH = 0;
+    protected int width = 0;
+    protected int height = 0;
+    private Toast toast = null;
+    protected boolean msg_queued = false;
+    public ProgressDialog pDialog = null;
+    public static UtilConfig cfg = null;
+    public boolean currentlyVisible = true;
+    public Handler handler = null;
+    private boolean blockBack = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -202,9 +205,9 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
 		return null;
 	}
 
-	public String S(int res) {
-		return getString(res);
-	}
+    public String S(int res) {
+        return getString(res);
+    }
 
 	protected boolean isLand() {
 		return Util.isLand(_this);
@@ -362,7 +365,7 @@ public abstract class UtilCompatActivity extends AppCompatActivity implements On
 				.commitAllowingStateLoss();
 	}
 
-	protected int getFragmentContainerId() {
-		return 0;
-	}
+    protected int getFragmentContainerId() {
+        return 0;
+    }
 }

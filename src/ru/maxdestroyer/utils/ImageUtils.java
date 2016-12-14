@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import java.io.File;
@@ -149,5 +150,10 @@ public class ImageUtils {
 
         myBitmap.setPixels(allpixels, 0, myBitmap.getWidth(), 0, 0, myBitmap.getWidth(), myBitmap.getHeight());
         return myBitmap;
+    }
+
+    public static Bitmap resize(@NonNull Bitmap input, int width, int height) {
+        return Bitmap.createScaledBitmap(
+                input, width, height, true);
     }
 }

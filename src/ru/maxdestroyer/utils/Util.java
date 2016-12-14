@@ -40,8 +40,10 @@ import android.os.StatFs;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.support.annotation.RequiresPermission;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -1096,12 +1098,13 @@ public abstract class Util
     }
 
     public static void askEnablingGPS(
-			final Activity activity, String message) {
-		if (message.isEmpty())
-			message = "Enable either GPS or any other location"
+            final Activity activity, @Nullable String message) {
+        if (TextUtils.isEmpty(message))
+            message = "Enable either GPS or any other location"
 					+ " service for location logs.  Click OK to go to"
 					+ " location services settings to let you do so.";
-		final AlertDialog.Builder builder =
+
+        final AlertDialog.Builder builder =
                 new AlertDialog.Builder(activity);
         final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
 

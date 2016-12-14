@@ -16,15 +16,25 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.ViewSwitcher;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import ru.maxdestroyer.utils.ImageUtils;
+import ru.maxdestroyer.utils.R;
+
 /**
  * Created by Maxim S. on 08.12.2015.
  */
+@SuppressWarnings("ResourceType")
 public class UtilDateTimeDialog implements View.OnClickListener {
     private DatePicker datePicker;
     private TimePicker timePicker;
@@ -49,6 +59,8 @@ public class UtilDateTimeDialog implements View.OnClickListener {
     private int selectedHour, selectedMinute;
 
     private boolean canPast = true;
+
+    private Runnable onSet = null;
 
     public enum Mode {
         FULL,
@@ -93,6 +105,7 @@ public class UtilDateTimeDialog implements View.OnClickListener {
         linear_main.setLayoutParams(linear_match_wrap);
         linear_main.setOrientation(LinearLayout.VERTICAL);
         linear_main.setGravity(Gravity.CENTER);
+        linear_main.setMinimumWidth(ImageUtils.dpToPix(250f));
 
         LinearLayout linear_child = new LinearLayout(activity);
         linear_child.setLayoutParams(linear_wrap_wrap);
@@ -103,13 +116,13 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
         btn_setDate = new Button(activity);
         btn_setDate.setLayoutParams(button_params);
-        btn_setDate.setText("Set Date");
+        btn_setDate.setText(R.string.datedialog_set_date);
         btn_setDate.setId(SET_DATE);
         btn_setDate.setOnClickListener(this);
 
         btn_setTime = new Button(activity);
         btn_setTime.setLayoutParams(button_params);
-        btn_setTime.setText("Set Time");
+        btn_setTime.setText(R.string.datedialog_set_time);
         btn_setTime.setId(SET_TIME);
         btn_setTime.setOnClickListener(this);
 
@@ -144,17 +157,19 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
         LinearLayout linear_bottom = new LinearLayout(activity);
         linear_match_wrap.topMargin = 8;
+        linear_match_wrap.bottomMargin = 8;
         linear_bottom.setLayoutParams(linear_match_wrap);
+        linear_bottom.setMinimumWidth(ImageUtils.dpToPix(250f));
 
         btn_set = new Button(activity);
         btn_set.setLayoutParams(button_params);
-        btn_set.setText("Set");
+        btn_set.setText(R.string.datedialog_set);
         btn_set.setId(SET);
         btn_set.setOnClickListener(this);
 
         btn_cancel = new Button(activity);
         btn_cancel.setLayoutParams(button_params);
-        btn_cancel.setText("Cancel");
+        btn_cancel.setText(R.string.datedialog_cancel);
         btn_cancel.setId(CANCEL);
         btn_cancel.setOnClickListener(this);
 
@@ -163,7 +178,7 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
         errMsg = new TextView(activity);
         errMsg.setLayoutParams(linear_match_wrap);
-        errMsg.setText("Can't Select Date From Past.");
+        errMsg.setText(R.string.datedialog_error_past);
         //errMsg.setTextColor(activity.getResources().getColor(R.color.Red));
         errMsg.setGravity(Gravity.CENTER_HORIZONTAL);
         //errMsg.setTypeface(face);
@@ -284,13 +299,13 @@ public class UtilDateTimeDialog implements View.OnClickListener {
     }
 
     public interface ICustomDateTimeListener {
-        public void onSet(Dialog dialog, Calendar calendarSelected,
-                          Date dateSelected, int year, String monthFullName,
-                          String monthShortName, int monthNumber, int date,
-                          String weekDayFullName, String weekDayShortName, int hour24,
-                          int hour12, int min, int sec, String AM_PM, long timeinMilliSec);
+        void onSet(Dialog dialog, Calendar calendarSelected,
+                   Date dateSelected, int year, String monthFullName,
+                   String monthShortName, int monthNumber, int date,
+                   String weekDayFullName, String weekDayShortName, int hour24,
+                   int hour12, int min, int sec, String AM_PM, long timeinMilliSec);
 
-        public void onCancel();
+        void onCancel();
     }
 
     @Override
@@ -353,6 +368,10 @@ public class UtilDateTimeDialog implements View.OnClickListener {
 
                         if (dialog.isShowing() && isAutoDismiss)
                             dialog.dismiss();
+
+
+                        if (onSet != null)
+                            onSet.run();
                     } else {
                         errMsg.setVisibility(View.VISIBLE);
                     }
@@ -478,5 +497,9 @@ public class UtilDateTimeDialog implements View.OnClickListener {
      */
     public void setCanPast(boolean canPast) {
         this.canPast = canPast;
+    }
+
+    public void setOnSetRunnable(Runnable onSet) {
+        this.onSet = onSet;
     }
 }
