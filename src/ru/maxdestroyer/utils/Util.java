@@ -39,6 +39,7 @@ import android.os.Looper;
 import android.os.StatFs;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
+import android.support.annotation.RequiresPermission;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -72,6 +73,9 @@ import java.util.regex.Pattern;
 import ru.maxdestroyer.utils.net.HostChecker;
 import ru.maxdestroyer.utils.visual.WakeLocker;
 
+import static android.Manifest.permission.CALL_PHONE;
+import static android.Manifest.permission.READ_PHONE_STATE;
+
 @SuppressLint({ "NewApi", "ServiceCast" })
 @SuppressWarnings("unused")
 public abstract class Util
@@ -99,8 +103,6 @@ public abstract class Util
 
 	/**
 	 * from main thread
-	 * @param c
-	 * @param text
      */
     public static void msgm(final Activity c, final Object text) {
 		c.runOnUiThread(new Runnable() {
@@ -119,7 +121,9 @@ public abstract class Util
 
 	// <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	// udid
-    public static String getDeviceId(Context c) {
+	@RequiresPermission(READ_PHONE_STATE)
+	@SuppressLint("HardwareIds")
+	public static String getDeviceId(Context c) {
 		TelephonyManager tManager = (TelephonyManager) c
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		String devId = tManager.getDeviceId();
@@ -128,7 +132,9 @@ public abstract class Util
 		return devId;
     }
 
-    public static String getSimId(Context c) {
+	@RequiresPermission(READ_PHONE_STATE)
+	@SuppressLint("HardwareIds")
+	public static String getSimId(Context c) {
 		TelephonyManager tManager = (TelephonyManager) c
 		  .getSystemService(Context.TELEPHONY_SERVICE);
 		String devId = tManager.getSimSerialNumber() != null ? tManager.getSimSerialNumber() : "";
@@ -660,6 +666,8 @@ public abstract class Util
 		}
 	}
 
+	@SuppressLint("HardwareIds")
+	@RequiresPermission(READ_PHONE_STATE)
     public static String getPhoneNumber(Context c) {
         TelephonyManager mTelephonyMgr = (TelephonyManager) c
                 .getSystemService(Context.TELEPHONY_SERVICE);
@@ -670,8 +678,6 @@ public abstract class Util
 
     /**
      * on;y self task after lolipop!
-     * @param ctx
-     * @return
      */
     public static boolean isTaskRunning(Context ctx) {
 		ActivityManager activityManager = (ActivityManager) ctx
@@ -713,12 +719,12 @@ public abstract class Util
 		return matcher.matches();
 	}
 
+	@Deprecated
 	public static int currentTimeMillis()
 	{
 		return (int) (System.currentTimeMillis() / 1000L & 0x00000000FFFFFFFFL);
 	}
 
-	
 	// в метрах
 	// GeoPoint - зависимость от яндекс картс!!
 	public static int distanceGP(double la1, double lo1, double la2, double lo2)
@@ -749,8 +755,11 @@ public abstract class Util
     public static boolean isEmulator() {
 		return Build.FINGERPRINT.contains("generic");
 	}
-	
-	// 0(прозрач) .. 1(норм)
+
+
+	/**
+	 * @param opacity - 0(прозрач) .. 1(норм)
+	 */
     public static void setOpacity(View v, float opacity) {
 		AlphaAnimation alpha = new AlphaAnimation(opacity, opacity);
 		alpha.setDuration(0);
@@ -875,6 +884,7 @@ public abstract class Util
 	}
 	
 	// <uses-permission android:name="android.permission.CALL_PHONE"/>
+	@RequiresPermission(CALL_PHONE)
     public static void call(String number, Context ctx) {
 		try
 		{
@@ -884,7 +894,10 @@ public abstract class Util
 		} catch (ActivityNotFoundException e)
 		{
             Util.log("Util::call failed, ActivityNotFoundException " + e.toString());
-        }
+        } catch (SecurityException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
     public static void sendEmail(Context context, String to, String subject, String text) {
@@ -1076,9 +1089,6 @@ public abstract class Util
 
     /**
      * can use with askEnablingGPS(ctx);
-     *
-     * @param ctx
-     * @return
      */
     public static boolean isGPSEnabled(Context ctx) {
         final LocationManager manager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
@@ -1144,9 +1154,7 @@ public abstract class Util
 	}
 
     /**
-     * Find index of occurence of source in strings
-     * @param source
-     * @param strings
+     * Find index of occurrence of source in strings
      * @return index of found item or -1 if not found
      */
     public static int findIn(String source, String[] strings) {

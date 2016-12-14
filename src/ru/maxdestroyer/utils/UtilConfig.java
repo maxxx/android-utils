@@ -20,7 +20,7 @@ import java.util.Map;
 @SuppressLint("CommitPrefEdits")
 public class UtilConfig
 {
-	SharedPreferences sPref;
+	private SharedPreferences sPref;
 	Editor ed;
 	private boolean commit = true;
     private static UtilConfig instance = null;

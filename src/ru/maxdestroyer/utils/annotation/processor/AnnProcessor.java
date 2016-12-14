@@ -18,7 +18,7 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 
 import ru.maxdestroyer.utils.Util;
-import ru.maxdestroyer.utils.annotation.BindView;
+import ru.maxdestroyer.utils.annotation.BindView2;
 
 public class AnnProcessor {
 
@@ -28,7 +28,7 @@ public class AnnProcessor {
 
             for (final Field f : cl.getDeclaredFields()) {
                 try {
-                    BindView ann = f.getAnnotation(BindView.class);
+                    BindView2 ann = f.getAnnotation(BindView2.class);
                     int vId = 0;
                     if (ann == null) {
                         continue;
@@ -81,7 +81,7 @@ public class AnnProcessor {
 
             for (final Field f : cl.getDeclaredFields()) {
                 try {
-                    BindView ann = f.getAnnotation(BindView.class);
+                    BindView2 ann = f.getAnnotation(BindView2.class);
                     if (ann == null) {
                         continue;
                     }
