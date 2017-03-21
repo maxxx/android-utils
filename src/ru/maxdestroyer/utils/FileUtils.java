@@ -10,6 +10,7 @@ package ru.maxdestroyer.utils;
 
 import android.annotation.SuppressLint;
 import android.os.StatFs;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -99,9 +100,15 @@ public abstract class FileUtils
 
     public static void deleteRecursive(String path) {
         File f = new File(path);
-        if (f.isDirectory())
-            for (File child : f.listFiles())
-                deleteRecursive(child.getAbsolutePath());
+        if (!f.exists())
+            return;
+
+        if (f.isDirectory()) {
+            if (f.listFiles() != null) {
+                for (File child : f.listFiles())
+                    deleteRecursive(child.getAbsolutePath());
+            }
+        }
 
         f.delete();
     }
