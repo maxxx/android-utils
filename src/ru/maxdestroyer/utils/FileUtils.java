@@ -20,82 +20,76 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public abstract class FileUtils
-{
+public abstract class FileUtils {
     public static void write(byte[] data, String fileName) throws IOException {
-		FileOutputStream out = new FileOutputStream(fileName);
-		out.write(data);
-		out.flush();
-		out.close();
-	}
+        FileOutputStream out = new FileOutputStream(fileName);
+        out.write(data);
+        out.flush();
+        out.close();
+    }
 
     public static void write(byte[] data, File file) throws IOException {
-		FileOutputStream out = new FileOutputStream(file);
-		out.write(data);
-		out.flush();
-		out.close();
-	}
+        FileOutputStream out = new FileOutputStream(file);
+        out.write(data);
+        out.flush();
+        out.close();
+    }
 
     public static void append(byte[] data, File file) throws IOException {
-		FileOutputStream out = new FileOutputStream(file, true);
-		out.write(data);
-		out.flush();
-		out.close();
-	}
+        FileOutputStream out = new FileOutputStream(file, true);
+        out.write(data);
+        out.flush();
+        out.close();
+    }
 
     public static void append(String str, File file) throws IOException {
-		FileOutputStream out = new FileOutputStream(file, true);
-		OutputStreamWriter bos = new OutputStreamWriter(out);
-		bos.write(str);
-		bos.close();
-		out.close();
-	}
+        FileOutputStream out = new FileOutputStream(file, true);
+        OutputStreamWriter bos = new OutputStreamWriter(out);
+        bos.write(str);
+        bos.close();
+        out.close();
+    }
 
     public static byte[] read(String fileName) throws IOException {
-		File file = new File(fileName);
-		int size = (int) file.length();
-		byte[] bytes = new byte[size];
-		try
-		{
-			BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-			buf.read(bytes, 0, bytes.length);
-			buf.close();
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return bytes;
-	}
+        File file = new File(fileName);
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
 
     public static byte[] read(File file) throws IOException {
-		int size = (int) file.length();
-		byte[] bytes = new byte[size];
-		try
-		{
-			BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-			buf.read(bytes, 0, bytes.length);
-			buf.close();
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return bytes;
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
 //		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 //		ObjectOutputStream oos = new ObjectOutputStream(bos);
 //		oos.writeObject(file);
 //		bos.close();
 //		oos.close();
 //		return bos.toByteArray();
-	}
+    }
 
 
     public static void deleteRecursive(String path) {
@@ -129,19 +123,19 @@ public abstract class FileUtils
         return sdAvailSize;
     }
 
-  /**
-   * @return first file
-   * @throws IOException
-   */
-  public static File unzip(File zipFile, File targetDirectory) throws IOException {
-    File result = null;
+    /**
+     * @return first file
+     * @throws IOException
+     */
+    public static File unzip(File zipFile, File targetDirectory) throws IOException {
+        File result = null;
         ZipInputStream zis = new ZipInputStream(
                 new BufferedInputStream(new FileInputStream(zipFile)));
         try {
             ZipEntry ze;
             int count;
-          byte[] buffer = new byte[8 * 1024];
-          while ((ze = zis.getNextEntry()) != null) {
+            byte[] buffer = new byte[8 * 1024];
+            while ((ze = zis.getNextEntry()) != null) {
                 File file = new File(targetDirectory, ze.getName());
                 File dir = ze.isDirectory() ? file : file.getParentFile();
                 if (!dir.isDirectory() && !dir.mkdirs())
@@ -156,18 +150,18 @@ public abstract class FileUtils
                 } finally {
                     fout.close();
                 }
-            if (result == null) {
-              result = file;
-            }
+                if (result == null) {
+                    result = file;
+                }
                 /* if time should be restored as well
-				long time = ze.getTime();
+                long time = ze.getTime();
 				if (time > 0)
 					file.setLastModified(time); */
             }
         } finally {
             zis.close();
         }
-    return result;
+        return result;
     }
 
     /**
@@ -179,29 +173,83 @@ public abstract class FileUtils
         return urlString.substring(urlString.lastIndexOf('/') + 1).split("\\?")[0].split("#")[0];
     }
 
-  /**
-   * @param ext - "jpg" etc...
-   * @return первый найденный файл
-   */
-  public static File getFileInDir(File dir, final String ext) {
-    File[] files = getFilesInDir(dir, ext);
+    /**
+     * @param ext - "jpg" etc...
+     * @return первый найденный файл
+     */
+    public static File getFileInDir(File dir, final String ext) {
+        File[] files = getFilesInDir(dir, ext);
 
-    if (files != null && files.length > 0) return files[0];
+        if (files != null && files.length > 0) return files[0];
 
-    return null;
-  }
+        return null;
+    }
 
-  /**
-   * @param ext - "jpg" etc...
-   * @return все файлы
-   */
-  public static File[] getFilesInDir(File dir, final String ext) {
-    File[] files = dir.listFiles(new FilenameFilter() {
-      @Override public boolean accept(File dir, String name) {
-        return name.endsWith("." + ext);
-      }
-    });
+    /**
+     * @param ext - "jpg" etc...
+     * @return все файлы
+     */
+    public static File[] getFilesInDir(File dir, final String ext) {
+        File[] files = dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith("." + ext);
+            }
+        });
 
-    return files;
-  }
+        return files;
+    }
+
+    public static void copy(String srcPath, String dstPath) {
+
+        try {
+            File src = new File(srcPath);
+            File dst = new File(dstPath);
+
+            if (src.isDirectory()) {
+
+                String files[] = src.list();
+                int filesLength = files.length;
+                for (int i = 0; i < filesLength; i++) {
+                    String src1 = (new File(src, files[i]).getPath());
+                    String dst1 = dst.getPath();
+                    copy(src1, dst1);
+                }
+            } else {
+                copyFile(src, dst);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void move(String srcPath, String dstPath) {
+        copy(srcPath, dstPath);
+        deleteRecursive(srcPath);
+    }
+
+    private static void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!destFile.getParentFile().exists())
+            destFile.getParentFile().mkdirs();
+
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+        }
+
+        FileChannel source = null;
+        FileChannel destination = null;
+
+        try {
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            destination.transferFrom(source, 0, source.size());
+        } finally {
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        }
+    }
 }
