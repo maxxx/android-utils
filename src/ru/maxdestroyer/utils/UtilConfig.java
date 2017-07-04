@@ -122,17 +122,21 @@ public class UtilConfig {
 	}
 
 	public String Load(String name) {
-		return sPref.getString(name, "");
+		return Load(name, "");
 	}
-	// не получится так, надо еще сохранять тип
-//	public <T> T Load(String name)
-//	{
-//		return (T) sPref.getString(name, "");
-//	}
+
+	public String Load(String name, String defaultValue) {
+		return sPref.getString(name, defaultValue);
+	}
 
 	public int LoadInt(String name)
 	{
-		return sPref.getInt(name, 0);
+		return LoadInt(name, 0);
+	}
+
+	public int LoadInt(String name, int defaultValue)
+	{
+		return sPref.getInt(name, defaultValue);
 	}
 
 	public Long LoadLong(String name)
