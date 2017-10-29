@@ -6,6 +6,14 @@ import android.graphics.Color;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.KeyStore;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
@@ -29,14 +37,6 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.File;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.KeyStore;
-import java.util.ArrayList;
-import java.util.List;
 
 import ru.maxdestroyer.utils.Convert;
 import ru.maxdestroyer.utils.Util;
@@ -345,8 +345,6 @@ public class PostLoader extends Thread
 			KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			trustStore.load(null, null);
 
-			MySSLSocketFactory sf = new MySSLSocketFactory(trustStore);
-			sf.setHostnameVerifier(new HostnameVerifier());
 
 			HttpParams params = new BasicHttpParams();
 			HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
@@ -359,7 +357,6 @@ public class PostLoader extends Thread
 
 			SchemeRegistry registry = new SchemeRegistry();
 			registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-			registry.register(new Scheme("https", sf, httpsPort));
 
 			ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
 
