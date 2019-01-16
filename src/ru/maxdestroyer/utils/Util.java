@@ -39,9 +39,6 @@ import android.os.Looper;
 import android.os.StatFs;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
-import android.support.annotation.RequiresPermission;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -72,6 +69,9 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
+import androidx.core.app.NotificationCompat;
 import ru.maxdestroyer.utils.net.HostChecker;
 import ru.maxdestroyer.utils.visual.WakeLocker;
 

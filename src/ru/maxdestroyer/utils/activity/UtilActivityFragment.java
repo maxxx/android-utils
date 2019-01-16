@@ -17,9 +17,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -32,6 +29,10 @@ import android.widget.Toast;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.ButterKnife;
 import ru.maxdestroyer.utils.UtilConfig;
 import ru.maxdestroyer.utils.fragment.UtilFragment;
@@ -50,7 +51,7 @@ public abstract class UtilActivityFragment extends FragmentActivity implements O
 	public ProgressDialog pDialog = null;
 	public static UtilConfig cfg;
 	public static boolean currentlyVisible = true;
-	public android.support.v4.app.FragmentTransaction fTrans = null;
+	public FragmentTransaction fTrans = null;
 	public boolean blockBack = false;
 	public Handler handler;
 

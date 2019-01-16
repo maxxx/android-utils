@@ -1,11 +1,12 @@
 package ru.maxdestroyer.utils.view;
 
 import android.os.Parcelable;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import java.util.List;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class SamplePagerAdapter extends PagerAdapter
 {
@@ -37,7 +38,7 @@ public class SamplePagerAdapter extends PagerAdapter
 		if (v.getParent() != null)
 		{
 			//Util.log("SPA:instantiateItem: parent = " + v.getParent().getClass().toString());
-			android.support.v4.view.ViewPager vp = (ViewPager) v.getParent();
+            ViewPager vp = (ViewPager) v.getParent();
 			vp.removeView(v);
 			//return v;
 		}

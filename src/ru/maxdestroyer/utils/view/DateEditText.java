@@ -13,7 +13,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
@@ -23,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.appcompat.widget.AppCompatEditText;
 import ru.maxdestroyer.utils.dialog.UtilDateTimeDialog;
 
 import static ru.maxdestroyer.utils.dialog.UtilDateTimeDialog.Mode.FULL;
